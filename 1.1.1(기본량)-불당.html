@@ -164,8 +164,6 @@
             font-size: 0.9rem;
             color: #4a5568;
         }
-
-        /* 팝업 스타일 */
         .popup-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.6); display: flex;
@@ -406,7 +404,7 @@
                 id: 35, type: 'fill-in', text: "35. 유도량 중 ( )는 길이 × 길이 × 길이로 구한다.",
                 answer: "부피", options: ["넓이", "밀도", "부피", "가속도"],
                 explanation: "부피는 가로, 세로, 높이 즉, 길이의 세 제곱으로 계산되는 유도량입니다."
-            },
+ _B_l_o_c_k_I_n_l_i_n_e_T_e_x_t_          },
             {
                 id: 36, type: 'ox', text: "36. 유도량 중 넓이는 길이 × 길이 × 길이로 구한다.",
                 answer: "X", options: ["O", "X"],
@@ -736,9 +734,9 @@
 
              const nextButton = document.createElement('button');
              nextButton.textContent = '다음';
-             nextButton.disabled = currentPage === numPages - 1;
+   _B_l_o_c_k_I_n_l_i_n_e_T_e_x_t_         nextButton.disabled = currentPage === numPages - 1;
              nextButton.onclick = () => renderQuestionsForPage(currentPage + 1);
-             paginationControlsElement.appendChild(nextButton);
+   _B_l_o_c_k_I_n_l_i_n_e_T_e_x_t_         paginationControlsElement.appendChild(nextButton);
          }
 
          function showMotivationalQuote() {
@@ -768,7 +766,7 @@
                      
                      if (q.isCorrect) {
                          scoreForThisPage++;
-                     }
+                 _B_l_o_c_k_I_n_l_i_n_e_T_e_x_t_     }
                      showFeedbackForQuestion(q, questionCard);
 
                      const radioInputs = questionCard.querySelectorAll('input[type="radio"]');
