@@ -433,8 +433,8 @@
                 const optionsContainer = document.createElement('div');
                 optionsContainer.classList.add('options');
 
-                q.options.forEach(option => {
-                    const optionId = `q${String(q.id).replace(/[^a-zA-Z0-9]/g, '')}-option-${option.replace(/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣$]/g, '')}`;
+                q.options.forEach((option, index) => {
+                    const optionId = `q${q.id}-option-${index}`;
                     
                     const radioInput = document.createElement('input');
                     radioInput.type = 'radio';
@@ -643,7 +643,7 @@
         window.onload = () => {
             if (welcomePopup) {
                 // 각 퀴즈 페이지마다 고유한 sessionStorage 키 사용
-                const popupSessionKey = 'appiaQuizPasswordEntered_earth_system';
+                const popupSessionKey = 'appiaQuizPasswordEntered_basic_quantities_final';
                 const popupShownThisSession = sessionStorage.getItem(popupSessionKey);
                 if (!popupShownThisSession) {
                     welcomePopup.classList.add('show');
@@ -663,7 +663,7 @@
                     if (welcomePopup) {
                         welcomePopup.classList.remove('show');
                     }
-                    const popupSessionKey = 'appiaQuizPasswordEntered_earth_system';
+                    const popupSessionKey = 'appiaQuizPasswordEntered_basic_quantities_final';
                     sessionStorage.setItem(popupSessionKey, 'true');
                     initializeQuizData();
                     renderQuestionsForPage(0);
