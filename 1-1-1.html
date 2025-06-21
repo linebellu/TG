@@ -388,8 +388,8 @@
                 const optionsContainer = document.createElement('div');
                 optionsContainer.classList.add('options');
 
-                q.options.forEach(option => {
-                    const optionId = `q${String(q.id).replace(/[^a-zA-Z0-9]/g, '')}-option-${option.replace(/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣$µ]/g, '')}`;
+                q.options.forEach((option, index) => {
+                    const optionId = `q${q.id}-option-${index}`;
                     
                     const radioInput = document.createElement('input');
                     radioInput.type = 'radio';
