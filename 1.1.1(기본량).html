@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.1.1 과학의 기초 - 기본량 (불당)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .question-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #2d3748;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .question-text .blank-emphasis {
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        .option-label {
+            display: block;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            background-color: #f7fafc;
+        }
+        .option-label:hover {
+            background-color: #e2e8f0;
+        }
+        .option-input:checked + .option-label {
+            background-color: #4299e1;
+            color: white;
+            border-color: #2b6cb0;
+        }
+        .feedback {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        .feedback.correct {
+            background-color: #c6f6d5;
+            color: #2f855a;
+            border: 1px solid #9ae6b4;
+        }
+        .feedback.incorrect {
+            background-color: #fed7d7;
+            color: #c53030;
+            border: 1px solid #fbb6ce;
+        }
+        .explanation {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+        .action-button {
+            background-color: #4a5568;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: none;
+            margin-top: 1rem;
+            margin-right: 0.5rem;
+        }
+        .action-button:hover:not(:disabled) {
+            background-color: #2d3748;
+        }
+        .action-button:disabled {
+            background-color: #a0aec0;
+            cursor: not-allowed;
+        }
+        .pagination-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .pagination-controls button, .pagination-controls span {
+            margin: 0 0.25rem;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        .pagination-controls button:disabled {
+            background-color: #e2e8f0;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .pagination-controls .page-number.current {
+            background-color: #4299e1;
+            color: white;
+            border-color: #2b6cb0;
+            font-weight: bold;
+        }
+        .score-section {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background-color: #e9f5ff;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .score-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+        .quiz-title-in-score {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 0.75rem;
+        }
+        .motivational-quote {
+            font-size: 1rem;
+            font-style: italic;
+            color: #374151;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #cbd5e0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a202c;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .page-info {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+        .popup-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); display: flex;
+            justify-content: center; align-items: center; z-index: 1000;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .popup-overlay.show { opacity: 1; visibility: visible; }
+        .popup-content {
+            background-color: white; padding: 2.5rem; border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); text-align: center;
+            max-width: 420px; width: 90%;
+        }
+        .popup-content h2 {
+            font-size: 1.75rem; font-weight: 700; color: #1a202c; margin-bottom: 1rem;
+        }
+        .popup-content p.welcome-message {
+            font-size: 1rem; color: #4a5568; margin-bottom: 1.5rem; line-height: 1.6;
+        }
+        .popup-password-input {
+            width: 100%; padding: 0.75rem; margin-bottom: 1rem;
+            border: 1px solid #cbd5e0; border-radius: 6px; font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .popup-confirm-btn {
+            background-color: #3b82f6; color: white; padding: 0.75rem 1.5rem;
+            border-radius: 8px; font-weight: 500; cursor: pointer;
+            transition: background-color 0.2s; border: none; width: 100%;
+            font-size: 1rem;
+        }
+        .popup-confirm-btn:hover { background-color: #2563eb; }
+        .popup-error-message {
+            color: #ef4444; font-size: 0.875rem; margin-top: 0.75rem;
+            min-height: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="welcome-popup" class="popup-overlay">
+        <div class="popup-content">
+            <h2>Appia 과학학원</h2>
+            <p class="welcome-message">유선종 선생님의 학습 자료입니다.<br>비밀번호를 입력해주세요.</p>
+            <input type="password" id="popup-password" class="popup-password-input" placeholder="비밀번호">
+            <button id="popup-confirm" class="popup-confirm-btn">확인</button>
+            <p id="popup-error" class="popup-error-message"></p>
+        </div>
+    </div>
+    <div class="quiz-container">
+        <h1>1.1.1 과학의 기초 - 기본량 (불당)</h1>
+        <div class="page-info" id="page-info"></div>
+        <div id="quiz">
+            </div>
+        <div class="pagination-controls" id="pagination-controls">
+            </div>
+        <button id="submit-page-btn" class="action-button w-full sm:w-auto mx-auto block">이번 페이지 채점하기</button>
+        <div class="score-section" id="score-section" style="display: none;">
+            <p class="score-text quiz-title-in-score" id="quiz-main-title-in-score"></p>
+            <p class="score-text" id="current-page-score-text"></p>
+            <p class="score-text" id="total-score-text"></p>
+            <p class="motivational-quote" id="motivational-quote" style="display: none;"></p>
+        </div>
+    </div>
+
+    <script>
+        // 문제 데이터
+        const questions = [
+            { id: 1, type: 'fill-in', text: "1. 자연 세계는 ( ) 수준의 아주 작은 규모를 나타내는 미시세계가 있다.", answer: "원자", options: ["분자", "원자", "세포", "은하"], explanation: "원자, 전자와 같이 매우 작은 입자 수준의 세계를 미시세계라고 합니다." },
+            { id: 2, type: 'fill-in', text: "2. 적혈구의 크기는 약 7 ( )로 미시세계에 속한다.", answer: "µm", options: ["mm", "cm", "nm", "µm"], explanation: "적혈구의 크기는 마이크로미터(micrometer, µm) 단위로 측정하는 것이 적절한 미시세계의 대상입니다." },
+            { id: 3, type: 'fill-in', text: "3. 동전의 두께는 1.5 ( )로 거시세계에 속한다.", answer: "mm", options: ["µm", "mm", "cm", "m"], explanation: "동전의 두께는 밀리미터(millimeter, mm) 단위로 측정하는 것이 적절한 거시세계의 대상입니다." },
+            { id: 4, type: 'fill-in', text: "4. ( )란 공간과 시간의 크기 범위를 나타내는 것을 말한다.", answer: "규모", options: ["단위", "규모", "법칙", "차원"], explanation: "규모(scale)는 관찰하거나 측정하려는 대상의 공간적, 시간적 크기의 범위를 의미합니다." },
+            { id: 5, type: 'ox', text: "5. 규모는 특정 크기를 뜻 한다.", answer: "X", options: ["O", "X"], explanation: "규모는 하나의 특정 크기값이 아니라, 미시세계, 거시세계와 같이 어느 정도의 범위를 의미합니다." },
+            { id: 6, type: 'ox', text: "6. 규모는 특정 크기가 아니라 어느 정도 범위를 뜻 한다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 규모는 특정 값이 아닌 크기의 범위를 나타내는 개념입니다." },
+            { id: 7, type: 'fill-in', text: "7. 거시세계는 ( ) 역학으로 설명이 가능한 범위이다.", answer: "뉴턴", options: ["양자", "상대성", "뉴턴", "열"], explanation: "우리가 일상적으로 경험하는 거시세계의 물체 운동은 대부분 뉴턴 역학으로 설명할 수 있습니다." },
+            { id: 8, type: 'fill-in', text: "8. 미시세계는 ( ) 역학으로 설명이 가능한 범위이다.", answer: "양자", options: ["양자", "고전", "뉴턴", "유체"], explanation: "원자나 전자와 같은 미시세계의 현상은 양자 역학으로 설명해야 합니다." },
+            { id: 9, type: 'fill-in', text: "9. 거시세계와 미시세계를 관측하는 방법이 다른 까닭은 적용되는 ( )이 다르기 때문이다.", answer: "과학법칙", options: ["측정도구", "단위", "과학법칙", "관찰자"], explanation: "거시세계는 뉴턴 역학, 미시세계는 양자 역학이라는 서로 다른 과학 법칙이 적용되므로 관측 방법도 달라야 합니다." },
+            { id: 10, type: 'fill-in', text: "10. 거시세계와 미시세계 중 관측 행위가 대상에 영향을 미치는 것은 ( )이다.", answer: "미시세계", options: ["거시세계", "미시세계", "둘 다", "둘 다 아님"], explanation: "미시세계에서는 관측 행위 자체가 대상의 상태를 변화시키는 중요한 특징이 있습니다." },
+            { id: 11, type: 'fill-in', text: "11. 과거에 ( )을 측정하는 방법에는 천문 현상을 이용하였다.", answer: "시간", options: ["길이", "시간", "질량", "온도"], explanation: "과거에는 해의 위치나 달의 모양 변화와 같은 천문 현상을 이용하여 시간을 측정했습니다." },
+            { id: 12, type: 'fill-in', text: "12. 과거에 ( )를 측정하는 방법으로 신체의 길이를 이용하였다.", answer: "길이", options: ["시간", "부피", "길이", "무게"], explanation: "과거에는 표준화된 자가 없었기 때문에 뼘, 보폭 등 자신의 신체 일부를 기준으로 길이를 측정했습니다." },
+            { id: 13, type: 'fill-in', text: "13. 오늘날 과거보다 더 ( ) 길이를 측정할 수 있게 되었다.", answer: "작은", options: ["긴", "정확한", "작은", "다양한"], explanation: "과학 기술의 발달로 현미경 등을 이용하여 과거에는 상상할 수 없었던 매우 작은 길이를 측정할 수 있게 되었습니다." },
+            { id: 14, type: 'fill-in', text: "14. 현대에는 정밀하게 시간을 측정하기 위해 ( )를 이용한다.", answer: "세슘 원자시계", options: ["해시계", "기계식 시계", "GPS", "세슘 원자시계"], explanation: "시간의 국제 표준은 세슘 원자의 고유한 진동수를 이용하는 세슘 원자시계로 정의됩니다." },
+            { id: 15, type: 'fill-in', text: "15. 현대에는 정밀하게 길이를 측정하기 위해 ( )을 이용한다.", answer: "빛의 왕복시간", options: ["세슘 원자", "지구 둘레", "표준 자", "빛의 왕복시간"], explanation: "길이의 표준(m)은 빛이 진공에서 특정 시간 동안 진행한 거리로 정의되므로, 빛의 왕복 시간을 정밀하게 측정하면 길이를 알 수 있습니다." },
+            { id: 16, type: 'ox', text: "16. 현대에는 정밀하게 시간을 측정하기 위해 빛의 왕복 시간을 이용한다.", answer: "X", options: ["O", "X"], explanation: "빛의 왕복 시간은 '길이'를 정밀하게 측정하는 데 이용됩니다. 시간의 표준은 '세슘 원자시계'입니다." },
+            { id: 17, type: 'fill-in', text: "17. GPS란 ( )을 뜻 한다.", answer: "위성위치확인시스템", options: ["전 지구 측량 시스템", "위성위치확인시스템", "전파 항법 시스템", "지리 정보 시스템"], explanation: "GPS는 Global Positioning System의 약자로, 우리말로는 '위성 위치 확인 시스템'입니다." },
+            { id: 18, type: 'fill-in', text: '18. 에라토스테네스 지구 둘레 측정 방법을 쓰기 위한 가정에는 "지구는 완벽한 ( )이다"가 있다.', answer: "구형", options: ["타원체", "평면", "구형", "원통"], explanation: "에라토스테네스는 계산의 편의를 위해 지구가 완전한 구형이라고 가정했습니다." },
+            { id: 19, type: 'fill-in', text: '19. 에라토스테네스 지구 둘레 측정 방법을 쓰기 위한 가정에는 "태양 빛은 지구에 ( )하게 들어온다"가 있다.', answer: "평행", options: ["수직", "평행", "분산", "집중"], explanation: "태양은 지구로부터 매우 멀리 떨어져 있기 때문에 지구에 도달하는 태양 빛은 거의 평행하다고 가정했습니다." },
+            { id: 20, type: 'ox', text: "20. 에라토스테네스 지구 둘레 측정 방법을 쓰기 위한 가정에 알렉산드리아와 시에네는 동일한 위도 상에 위치한다.", answer: "X", options: ["O", "X"], explanation: "두 도시는 동일한 '경도' 상에 위치한다고 가정해야 중심각과 호의 관계를 이용할 수 있습니다." },
+            { id: 21, type: 'ox', text: "21. GPS를 이용하면 정밀한 길이를 측정할 수 있다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. GPS는 여러 위성으로부터 오는 신호를 분석하여 매우 정밀하게 위치와 거리를 측정할 수 있습니다." },
+            { id: 22, type: 'fill-in', text: "22. GPS를 이용하기 위해 최소 ( )개 이상의 위성이 필요하다.", answer: "3", options: ["2", "3", "4", "5"], explanation: "이론적으로 3개의 위성으로 2차원(평면) 위치를 결정할 수 있으며, 고도까지 포함한 3차원 위치를 정확히 알기 위해서는 4개의 위성이 필요합니다. 문제의 맥락상 최소 개수는 3입니다." },
+            { id: 23, type: 'fill-in', text: "23. 기본량은 총 ( )가지이다.", answer: "7", options: ["5", "6", "7", "8"], explanation: "국제단위계(SI)에서 정의하는 기본량은 길이, 질량, 시간, 전류, 온도, 물질량, 광도의 7가지입니다." },
+            { id: 24, type: 'fill-in', text: "24. 질량과 무게 중 기본량은 ( )이다.", answer: "질량", options: ["질량", "무게", "둘 다", "둘 다 아님"], explanation: "질량은 물질의 고유한 양으로 기본량이며, 무게는 질량에 중력가속도가 곱해진 힘(유도량)입니다." },
+            { id: 25, type: 'fill-in', text: "25. 질량의 기본 단위는 ( )이다.", answer: "kg", options: ["g", "mg", "kg", "t"], explanation: "국제단위계(SI)에서 질량의 기본 단위는 킬로그램(kg)입니다." },
+            { id: 26, type: 'ox', text: "26. 질량의 단위는 kg 하나이다.", answer: "X", options: ["O", "X"], explanation: "kg은 질량의 '기본 단위'이지만, g, mg, t(톤) 등 다양한 단위를 함께 사용합니다." },
+            { id: 27, type: 'ox', text: "27. 질량의 단위에는 kg, 톤 등 여러가지 단위가 있다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. kg, g, t(톤), lb(파운드) 등 다양한 질량 단위가 있습니다." },
+            { id: 28, type: 'fill-in', text: "28. 1t는 ( )kg이다.", answer: "1000", options: ["10", "100", "1000", "10000"], explanation: "1톤(t)은 1000킬로그램(kg)으로 정의됩니다." },
+            { id: 29, type: 'fill-in', text: "29. 1m는 ( )cm 이다.", answer: "100", options: ["10", "100", "1000", "0.1"], explanation: "1미터(m)는 100센티미터(cm)와 같습니다." },
+            { id: 30, type: 'fill-in', text: "30. 기본량 중 온도의 기본 단위는 ( )이다.", answer: "K", options: ["℃", "℉", "K", "cal"], explanation: "국제단위계(SI)에서 온도의 기본 단위는 켈빈(K)입니다. ℃(섭씨)는 일상에서 널리 쓰이는 단위입니다." },
+            { id: 31, type: 'fill-in', text: "31. 기본량 중 전류의 기본 단위는 ( )이다.", answer: "A", options: ["V", "Ω", "W", "A"], explanation: "국제단위계(SI)에서 전류의 기본 단위는 암페어(A)입니다." },
+            { id: 32, type: 'fill-in', text: "32. 기본량에는 ( ), ( ), ( ), ( ), ( ), ( ), ( )이 있다.", answer: "질량;길이;시간;온도;광도;전류;물질량", options: ["힘;속도;에너지;압력;전압;저항;일률", "질량;길이;시간;온도;광도;전류;물질량", "넓이;부피;밀도;농도;가속도;힘;에너지", "무게;거리;분;섭씨;밝기;전하량;개수"], explanation: "SI 7대 기본량은 질량, 길이, 시간, 온도, 광도, 전류, 물질량입니다." },
+            { id: 33, type: 'fill-in', text: "33. 용액의 붉고 진한 정도는 질량을 이용한 ( )로 표현한다.", answer: "농도", options: ["밀도", "농도", "광도", "색도"], explanation: "용액의 진한 정도, 즉 전체 용액에 대한 용질의 양을 나타내는 유도량은 농도입니다." },
+            { id: 34, type: 'ox', text: "34. 모든 유도량에는 단위가 있다.", answer: "X", options: ["O", "X"], explanation: "대부분의 유도량은 단위가 있지만, 상대 굴절률이나 마찰 계수처럼 단위가 없는 유도량도 있습니다." },
+            { id: 35, type: 'fill-in', text: "35. 유도량 중 ( )는 길이 × 길이 × 길이로 구한다.", answer: "부피", options: ["넓이", "밀도", "부피", "가속도"], explanation: "부피는 가로, 세로, 높이 즉, 길이의 세 제곱으로 계산되는 유도량입니다." },
+            { id: 36, type: 'fill-in', text: "36. 유도량 중 ( )는 길이 × 길이로 구한다.", answer: "넓이", options: ["넓이", "부피", "속도", "밀도"], explanation: "넓이는 가로와 세로, 즉 길이의 제곱으로 계산되는 유도량입니다." },
+            { id: 37, type: 'fill-in', text: "37. 유도량 중 밀도의 단위는 ( )이다.", answer: "kg/m³", options: ["kg/m²", "g/cm²", "kg/m³", "mol/L"], explanation: "밀도는 질량을 부피로 나눈 값이므로, SI 단위계에서 질량(kg)을 부피(m³)로 나누어 kg/m³로 표현합니다." },
+            { id: 38, type: 'fill-in', text: "38. 유도량 중 농도의 단위는 ( )이다.", answer: "%", options: ["mol", "kg", "%", "L"], explanation: "농도는 %, ppm, M(mol/L) 등 다양한 단위를 사용하며, 그 중 백분율을 나타내는 %가 널리 쓰입니다." },
+            { id: 39, type: 'fill-in', text: "39. 유도량 중 속도의 단위는 ( )이다.", answer: "m/s", options: ["m", "s", "m/s", "m/s²"], explanation: "속도는 이동 거리를 걸린 시간으로 나눈 값이므로, SI 단위계에서 m/s로 표현합니다." },
+            { id: 40, type: 'fill-in', text: "40. 유도량 중 가속도의 단위는 ( )이다.", answer: "m/s²", options: ["m/s", "m/s²", "N", "J"], explanation: "가속도는 속도의 변화량을 시간으로 나눈 값이므로, (m/s) / s = m/s² 입니다." },
+            { id: 41, type: 'fill-in', text: "41. 유도량 중 ( )은 질량 × 가속도로 구한다.", answer: "힘", options: ["일", "에너지", "힘", "압력"], explanation: "뉴턴의 제2법칙에 따라 힘(F)은 질량(m)과 가속도(a)의 곱(F=ma)으로 정의됩니다." },
+            { id: 42, type: 'fill-in', text: "42. 유도량 중 m/s²을 단위로 쓰는 것은 ( )이다.", answer: "가속도", options: ["속도", "힘", "가속도", "에너지"], explanation: "m/s²은 가속도의 단위입니다. 힘의 단위는 N 또는 kg·m/s² 입니다." },
+            { id: 43, type: 'fill-in', text: "43. 유도량 중 N·m 또는 kg·m²/s²을 단위로 쓰는 것은 ( )이다.", answer: "에너지", options: ["힘", "압력", "에너지", "일률"], explanation: "N·m과 kg·m²/s²은 일 또는 에너지의 단위인 줄(Joule, J)과 같습니다." },
+            { id: 44, type: 'fill-in', text: "44. 유도량 중 압력의 단위로 ( )을 쓴다.", answer: "N/m²", options: ["kg/m²", "kg·m/s²", "N/m²", "N/m"], explanation: "압력은 단위 면적당 작용하는 힘(F/A)이므로, 힘의 단위(N)을 면적의 단위(m²)로 나눈 N/m²을 사용합니다. 이는 파스칼(Pa)과 같습니다." },
+            { id: 45, type: 'fill-in', text: "45. 유도량 중 열용량, 비열의 단위는 ( )를 쓴다.", answer: "cal", options: ["J", "W", "cal", "K"], explanation: "열량의 단위로 칼로리(cal)가 널리 쓰이며, 비열(cal/g·℃), 열용량(cal/℃) 등의 단위에 사용됩니다. SI 단위는 줄(J)입니다." },
+            { id: 46, type: 'fill-in', text: "46. 1초당 진동한 횟수인 진동수의 단위는 ( )를 쓴다.", answer: "Hz", options: ["s", "A", "Hz", "m"], explanation: "진동수의 단위는 헤르츠(Hertz, Hz)이며, 1Hz는 1초에 1번 진동하는 것을 의미합니다." },
+            { id: 47, type: 'ox', text: "47. 속력은 시간과 길이를 이용해 단위로 m/s 또는 km/h를 모두 쓸 수 있다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. m/s는 SI 기본 단위를 이용한 속력의 단위이고, km/h는 일상생활에서 널리 쓰이는 속력의 단위입니다." },
+            { id: 48, type: 'ox', text: "48. 같은 기본량을 서로 다른 단위로 나타내면 혼란을 일으킬 수 있다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 이 때문에 과학계에서는 오해와 혼란을 줄이기 위해 국제단위계(SI) 사용을 권장합니다." },
+            { id: 49, type: 'ox', text: "49. 과학에서는 기본량 마다 기본이 되는 단위를 정해서 사용해야 한다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 명확한 의사소통과 재현 가능한 실험을 위해 국제단위계(SI)와 같이 표준화된 기본 단위를 사용하는 것이 중요합니다." },
+            { id: 50, type: 'fill-in', text: "50. 과거에는 태양의 위치를 기준으로 ( )을 측정했다.", answer: "시간", options: ["온도", "거리", "시간", "날씨"], explanation: "해시계는 태양의 위치 변화에 따른 그림자의 변화를 이용하여 시간을 측정하는 장치입니다." },
+            { id: 51, type: 'fill-in', text: "51. 속력의 단위는 m/s이다. 이를 설명하기 위해 필요한 기본량은 ( )와 ( )이다.", answer: "길이;시간", options: ["질량;시간", "길이;시간", "길이;질량", "시간;온도"], explanation: "속력은 거리를 시간으로 나눈 유도량이므로, 기본량인 길이(m)와 시간(s)이 필요합니다." },
+            { id: 52, type: 'fill-in', text: "52. 1시간은 ( )초 이다.", answer: "3600", options: ["60", "360", "3600", "600"], explanation: "1시간 = 60분, 1분 = 60초이므로, 1시간 = 60 × 60초 = 3600초입니다." },
+            { id: 53, type: 'fill-in', text: "53. 부피의 단위인 1L는 ( )cm³이다.", answer: "1000", options: ["10", "100", "1000", "1"], explanation: "1리터(L)는 1000세제곱센티미터(cm³)와 같습니다." },
+            { id: 54, type: 'fill-in', text: "54. 질량의 단위인 1t는 ( )kg이다.", answer: "1000", options: ["10", "100", "1000", "0.1"], explanation: "1톤(t)은 1000킬로그램(kg)과 같습니다." },
+            { id: 55, type: 'fill-in', text: "55. 킬로(k)는 10³배를 의미하며, 1km는 ( )m이다.", answer: "1000", options: ["10", "100", "1000", "10000"], explanation: "접두어 '킬로(k)'는 10³배, 즉 1000배를 의미합니다." },
+            { id: 56, type: 'fill-in', text: "56. 센티(c)는 10⁻²배를 의미하며, 20cm는 ( )m이다.", answer: "0.2", options: ["2", "200", "0.2", "0.02"], explanation: "접두어 '센티(c)'는 10⁻²배, 즉 1/100배를 의미합니다. 따라서 20cm = 20 × 0.01m = 0.2m 입니다." },
+            { id: 57, type: 'fill-in', text: "57. 나노(n)는 ( )배를 의미한다.", answer: "10⁻⁹", options: ["10⁹", "10⁻⁶", "10⁻⁹", "10⁶"], explanation: "접두어 '나노(n)'는 10⁻⁹배, 즉 10억분의 1배를 의미합니다." },
+            { id: 58, type: 'fill-in', text: "58. 메가(M)는 ( )배를 의미한다.", answer: "10⁶", options: ["10³", "10⁶", "10⁹", "10⁻⁶"], explanation: "접두어 '메가(M)'는 10⁶배, 즉 100만배를 의미합니다." },
+            { id: 59, type: 'fill-in', text: "59. 마이크로(µ)는 ( )배를 의미한다.", answer: "10⁻⁶", options: ["10⁻³", "10³", "10⁻⁶", "10⁶"], explanation: "접두어 '마이크로(μ)'는 10⁻⁶배, 즉 100만분의 1배를 의미합니다." },
+            { id: 60, type: 'fill-in', text: "60. 밀리(m)는 10⁻³배를 의미하며, 10mA는 ( )A이다.", answer: "0.01", options: ["1", "0.1", "0.01", "0.001"], explanation: "접두어 '밀리(m)'는 10⁻³배, 즉 1/1000배를 의미합니다. 따라서 10mA = 10 × 0.001A = 0.01A 입니다." }
+        ];
+
+        // 명언 목록
+        const motivationalQuotes = [
+            "오늘의 노력이 내일의 너를 만든다.", "포기하지 않는 한, 실패는 없다.", "가장 큰 위험은 아무 위험도 감수하지 않는 것이다.",
+            "배움은 의무도, 생존도 아니다. 그것은 우리의 가장 큰 특권이다.", "성공은 최종 목적지가 아니며, 실패는 치명적이지 않다. 중요한 것은 계속 나아가는 용기다.",
+            "작은 성공들이 모여 큰 성공을 이룬다.", "어제보다 나은 오늘, 오늘보다 나은 내일을 만들자.",
+            "가장 큰 영광은 한 번도 실패하지 않음이 아니라 실패할 때마다 다시 일어서는 데에 있다.", "천리길도 한 걸음부터.", "노력은 결코 배신하지 않는다."
+        ];
+
+        const quizElement = document.getElementById('quiz');
+        const paginationControlsElement = document.getElementById('pagination-controls');
+        const submitPageButton = document.getElementById('submit-page-btn');
+        const scoreSectionElement = document.getElementById('score-section');
+        const currentPageScoreTextElement = document.getElementById('current-page-score-text');
+        const totalScoreTextElement = document.getElementById('total-score-text');
+        const pageInfoElement = document.getElementById('page-info');
+        const quizMainTitleDisplayElement = document.getElementById('quiz-main-title-in-score');
+        const motivationalQuoteElement = document.getElementById('motivational-quote');
+        
+        const welcomePopup = document.getElementById('welcome-popup');
+        const popupPasswordInput = document.getElementById('popup-password');
+        const popupConfirmButton = document.getElementById('popup-confirm');
+        const popupErrorMessage = document.getElementById('popup-error');
+
+        const correctPassword = "0407";
+
+        const questionsPerPage = 10;
+        let currentPage = 0;
+        let pageScores = [];
+        let pageAttempted = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function initializeQuizData() {
+            questions.forEach(q => {
+                q.userAnswer = null;
+                q.isCorrect = null;
+                q.attemptedThisSession = false;
+                if (q.answer && q.answer.includes(';')) {
+                    q.answersArray = q.answer.split(';');
+                } else if (q.answer) {
+                    q.answersArray = [q.answer];
+                } else {
+                    q.answersArray = [];
+                }
+                if (q.type !== 'ox') {
+                   shuffleArray(q.options);
+                }
+            });
+            const numPages = Math.ceil(questions.length / questionsPerPage);
+            pageAttempted = new Array(numPages).fill(false);
+            pageScores = new Array(numPages).fill(0);
+        }
+
+        function renderQuestionsForPage(page) {
+            quizElement.innerHTML = '';
+            currentPage = page;
+
+            const start = page * questionsPerPage;
+            const end = Math.min(start + questionsPerPage, questions.length);
+            const questionsOnPage = questions.slice(start, end);
+
+            pageInfoElement.textContent = `총 ${questions.length}문제 중 ${start + 1} - ${end}번 문제`;
+
+            questionsOnPage.forEach((q, indexOnPage) => {
+                const questionCard = document.createElement('div');
+                questionCard.classList.add('question-card');
+                questionCard.id = `question-${q.id}`;
+
+                const questionText = document.createElement('p');
+                questionText.classList.add('question-text');
+                let processedText = q.text.replace(/\d+\.\s*/, (match) => `<span class="font-bold">${match}</span>`);
+                
+                processedText = processedText.replace(/(\(\s*\))/g, '<span class="blank-emphasis">( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</span>');
+                
+                // Handle multiple blanks
+                let blankIndex = 0;
+                processedText = processedText.replace(/<span class="blank-emphasis">\( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \)<\/span>/g, () => {
+                    if (q.answersArray && q.answersArray.length > 1 && q.answersArray[blankIndex]) {
+                        const blankText = `( ${"&nbsp;".repeat(q.answersArray[blankIndex].length * 2)} )`;
+                        blankIndex++;
+                        return `<span class="blank-emphasis">${blankText}</span>`;
+                    }
+                    return '<span class="blank-emphasis">( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</span>';
+                });
+
+                questionText.innerHTML = processedText.replace(/⁻/g, '<sup>-</sup>').replace(/\u00b3/g, '<sup>3</sup>').replace(/\u00b2/g, '<sup>2</sup>');
+                questionCard.appendChild(questionText);
+
+                const optionsContainer = document.createElement('div');
+                optionsContainer.classList.add('options');
+
+                q.options.forEach(option => {
+                    const optionId = `q${String(q.id).replace(/[^a-zA-Z0-9]/g, '')}-option-${option.replace(/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣$µ]/g, '')}`;
+                    
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.id = optionId;
+                    radioInput.name = `question-${q.id}`;
+                    radioInput.value = option;
+                    radioInput.classList.add('option-input', 'hidden');
+                    if (q.userAnswer === option) radioInput.checked = true;
+                    if (pageAttempted[currentPage]) radioInput.disabled = true;
+
+                    const optionLabel = document.createElement('label');
+                    optionLabel.htmlFor = optionId;
+                    optionLabel.innerHTML = option.includes(';') ? option.split(';').join(', ') : option.replace(/⁻/g, '<sup>-</sup>').replace(/\u00b3/g, '<sup>3</sup>').replace(/\u00b2/g, '<sup>2</sup>');
+                    optionLabel.classList.add('option-label');
+                    if (pageAttempted[currentPage]) optionLabel.classList.add('opacity-70', 'cursor-not-allowed');
+
+                    optionsContainer.appendChild(radioInput);
+                    optionsContainer.appendChild(optionLabel);
+                });
+                questionCard.appendChild(optionsContainer);
+
+                const feedbackElement = document.createElement('div');
+                feedbackElement.classList.add('feedback');
+                feedbackElement.style.display = 'none';
+                questionCard.appendChild(feedbackElement);
+                
+                if (pageAttempted[currentPage] && q.attemptedThisSession) {
+                    showFeedbackForQuestion(q, questionCard);
+                }
+                quizElement.appendChild(questionCard);
+            });
+
+            const numPages = Math.ceil(questions.length / questionsPerPage);
+            if (numPages > 1) {
+                paginationControlsElement.style.display = 'flex';
+                renderPaginationControls();
+            } else {
+                paginationControlsElement.style.display = 'none';
+            }
+
+            submitPageButton.disabled = pageAttempted[currentPage];
+            if (pageAttempted[currentPage]) {
+                submitPageButton.textContent = '채점 완료';
+                scoreSectionElement.style.display = 'block';
+                updateScoreDisplay();
+                showMotivationalQuote();
+            } else {
+                submitPageButton.textContent = '이번 페이지 채점하기';
+                motivationalQuoteElement.style.display = 'none';
+                if (questionsOnPage.length > 0) {
+                    scoreSectionElement.style.display = 'none';
+                } else {
+                    scoreSectionElement.style.display = 'block';
+                    currentPageScoreTextElement.textContent = '이번 페이지에 문제가 없습니다.';
+                    totalScoreTextElement.textContent = '';
+                }
+            }
+        }
+        
+        function showFeedbackForQuestion(question, questionCard) {
+            const feedbackElement = questionCard.querySelector('.feedback');
+            if (!feedbackElement) return;
+
+            feedbackElement.innerHTML = '';
+            const correctAnswerText = question.answersArray.join(', ');
+
+            if (question.isCorrect) {
+                feedbackElement.innerHTML = '<strong class="font-semibold">정답입니다!</strong> 🎉';
+                feedbackElement.className = 'feedback correct';
+            } else {
+                feedbackElement.innerHTML = `<strong class="font-semibold">오답입니다.</strong> 정답은 "<span class="font-bold text-red-700">${correctAnswerText.replace(/⁻/g, '<sup>-</sup>').replace(/\u00b3/g, '<sup>3</sup>').replace(/\u00b2/g, '<sup>2</sup>')}</span>"입니다.`;
+                feedbackElement.className = 'feedback incorrect';
+            }
+
+            const explanationElement = document.createElement('p');
+            explanationElement.classList.add('explanation');
+            explanationElement.innerHTML = `<strong class="font-semibold">해설:</strong> ${question.explanation}`;
+            feedbackElement.appendChild(explanationElement);
+            feedbackElement.style.display = 'block';
+        }
+
+        function renderPaginationControls() {
+            paginationControlsElement.innerHTML = '';
+            const numPages = Math.ceil(questions.length / questionsPerPage);
+
+            const prevButton = document.createElement('button');
+            prevButton.textContent = '이전';
+            prevButton.disabled = currentPage === 0;
+            prevButton.onclick = () => renderQuestionsForPage(currentPage - 1);
+            paginationControlsElement.appendChild(prevButton);
+
+            for (let i = 0; i < numPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i + 1;
+                pageButton.classList.add('page-number');
+                if (i === currentPage) {
+                    pageButton.classList.add('current');
+                }
+                pageButton.onclick = () => renderQuestionsForPage(i);
+                paginationControlsElement.appendChild(pageButton);
+            }
+
+            const nextButton = document.createElement('button');
+            nextButton.textContent = '다음';
+            nextButton.disabled = currentPage === numPages - 1;
+            nextButton.onclick = () => renderQuestionsForPage(currentPage + 1);
+            paginationControlsElement.appendChild(nextButton);
+        }
+
+        function showMotivationalQuote() {
+            const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
+            motivationalQuoteElement.textContent = motivationalQuotes[randomIndex];
+            motivationalQuoteElement.style.display = 'block';
+        }
+
+        submitPageButton.addEventListener('click', () => {
+            if (pageAttempted[currentPage]) return;
+
+            let scoreForThisPage = 0;
+            
+            const start = currentPage * questionsPerPage;
+            const end = Math.min(start + questionsPerPage, questions.length);
+            const questionsOnPage = questions.slice(start, end);
+
+            questionsOnPage.forEach((q, indexOnPage) => {
+                const questionCard = quizElement.children[indexOnPage];
+                const selectedOptionInput = questionCard.querySelector(`input[name="question-${q.id}"]:checked`);
+                
+                q.attemptedThisSession = true;
+
+                if (selectedOptionInput) {
+                    q.userAnswer = selectedOptionInput.value;
+                    q.isCorrect = (q.userAnswer === q.answer);
+                    
+                    if (q.isCorrect) {
+                        scoreForThisPage++;
+                    }
+                    showFeedbackForQuestion(q, questionCard);
+
+                    const radioInputs = questionCard.querySelectorAll('input[type="radio"]');
+                    radioInputs.forEach(input => input.disabled = true);
+                } else {
+                    const feedbackElement = questionCard.querySelector('.feedback');
+                    feedbackElement.textContent = '답을 선택하지 않았습니다.';
+                    feedbackElement.className = 'feedback incorrect';
+                    feedbackElement.style.display = 'block';
+                    q.isCorrect = false;
+                }
+            });
+            
+            pageScores[currentPage] = scoreForThisPage;
+            pageAttempted[currentPage] = true;
+            submitPageButton.disabled = true;
+            submitPageButton.textContent = '채점 완료';
+            
+            scoreSectionElement.style.display = 'block';
+            updateScoreDisplay();
+            showMotivationalQuote();
+
+            const quizContainerElement = document.querySelector('.quiz-container');
+            if (quizContainerElement) {
+                quizContainerElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+
+        function updateScoreDisplay() {
+            const questionsOnThisPageCount = Math.min(questionsPerPage, questions.length - (currentPage * questionsPerPage));
+            currentPageScoreTextElement.textContent = `이번 페이지 점수: ${pageScores[currentPage]} / ${questionsOnThisPageCount}`;
+            
+            let currentTotalScore = 0;
+            let currentTotalAttemptedQuestions = 0;
+            for(let i=0; i < pageAttempted.length; i++){
+                if(pageAttempted[i]){
+                    const start = i * questionsPerPage;
+                    const end = Math.min(start + questionsPerPage, questions.length);
+                    currentTotalAttemptedQuestions += (end-start);
+                    currentTotalScore += pageScores[i];
+                }
+            }
+
+            const quizTitleElement = document.querySelector('h1');
+            let quizMainTitle = "현재 단원";
+            if (quizTitleElement) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = quizTitleElement.innerHTML;
+                quizMainTitle = tempDiv.textContent || tempDiv.innerText || "";
+                const titleParts = quizMainTitle.split('(');
+                if (titleParts.length > 0) {
+                    quizMainTitle = titleParts[0].trim();
+                }
+            }
+            
+            if (quizMainTitleDisplayElement) {
+                quizMainTitleDisplayElement.textContent = quizMainTitle;
+            }
+
+            if (currentTotalAttemptedQuestions > 0) {
+                 totalScoreTextElement.style.display = 'block';
+                 totalScoreTextElement.textContent = `총 누적 점수: ${currentTotalScore} / ${currentTotalAttemptedQuestions}`;
+            } else {
+                 totalScoreTextElement.style.display = 'none';
+            }
+        }
+        
+        // 팝업 기능
+        window.onload = () => {
+            if (welcomePopup) {
+                // 각 퀴즈 페이지마다 고유한 sessionStorage 키 사용
+                const popupSessionKey = 'appiaQuizPasswordEntered_basic_quantities_final';
+                const popupShownThisSession = sessionStorage.getItem(popupSessionKey);
+                if (!popupShownThisSession) {
+                    welcomePopup.classList.add('show');
+                } else {
+                    initializeQuizData();
+                    renderQuestionsForPage(0);
+                }
+            } else {
+                initializeQuizData();
+                renderQuestionsForPage(0);
+            }
+        };
+
+        if (popupConfirmButton) {
+            popupConfirmButton.addEventListener('click', () => {
+                if (popupPasswordInput.value === correctPassword) {
+                    if (welcomePopup) {
+                        welcomePopup.classList.remove('show');
+                    }
+                    const popupSessionKey = 'appiaQuizPasswordEntered_basic_quantities_final';
+                    sessionStorage.setItem(popupSessionKey, 'true');
+                    initializeQuizData();
+                    renderQuestionsForPage(0);
+                } else {
+                    if (popupErrorMessage) {
+                        popupErrorMessage.textContent = "비밀번호가 틀렸습니다. 다시 시도해주세요.";
+                    }
+                    popupPasswordInput.value = '';
+                    popupPasswordInput.focus();
+                }
+            });
+        }
+        
+        if (popupPasswordInput) {
+            popupPasswordInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    popupConfirmButton.click();
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>
