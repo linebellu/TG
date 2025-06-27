@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.2.2 물질의 전기적 성질 (불당고)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .question-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #2d3748;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .question-text .blank-emphasis {
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        .option-label {
+            display: block;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            background-color: #f7fafc;
+        }
+        .option-label:hover {
+            background-color: #e2e8f0;
+        }
+        .option-input:checked + .option-label {
+            background-color: #4299e1;
+            color: white;
+            border-color: #2b6cb0;
+        }
+        .feedback {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        .feedback.correct {
+            background-color: #c6f6d5;
+            color: #2f855a;
+            border: 1px solid #9ae6b4;
+        }
+        .feedback.incorrect {
+            background-color: #fed7d7;
+            color: #c53030;
+            border: 1px solid #fbb6ce;
+        }
+        .explanation {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+        .action-button {
+            background-color: #4a5568;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: none;
+            margin-top: 1rem;
+            margin-right: 0.5rem;
+        }
+        .action-button:hover:not(:disabled) {
+            background-color: #2d3748;
+        }
+        .action-button:disabled {
+            background-color: #a0aec0;
+            cursor: not-allowed;
+        }
+        .pagination-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .pagination-controls button, .pagination-controls span {
+            margin: 0 0.25rem;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        .pagination-controls button:disabled {
+            background-color: #e2e8f0;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .pagination-controls .page-number.current {
+            background-color: #4299e1;
+            color: white;
+            border-color: #2b6cb0;
+            font-weight: bold;
+        }
+        .score-section {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background-color: #e9f5ff;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .score-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+        .quiz-title-in-score {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 0.75rem;
+        }
+        .motivational-quote {
+            font-size: 1rem;
+            font-style: italic;
+            color: #374151;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #cbd5e0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a202c;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .page-info {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+        .popup-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); display: flex;
+            justify-content: center; align-items: center; z-index: 1000;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .popup-overlay.show { opacity: 1; visibility: visible; }
+        .popup-content {
+            background-color: white; padding: 2.5rem; border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); text-align: center;
+            max-width: 420px; width: 90%;
+        }
+        .popup-content h2 {
+            font-size: 1.75rem; font-weight: 700; color: #1a202c; margin-bottom: 1rem;
+        }
+        .popup-content p.welcome-message {
+            font-size: 1rem; color: #4a5568; margin-bottom: 1.5rem; line-height: 1.6;
+        }
+        .popup-password-input {
+            width: 100%; padding: 0.75rem; margin-bottom: 1rem;
+            border: 1px solid #cbd5e0; border-radius: 6px; font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .popup-confirm-btn {
+            background-color: #3b82f6; color: white; padding: 0.75rem 1.5rem;
+            border-radius: 8px; font-weight: 500; cursor: pointer;
+            transition: background-color 0.2s; border: none; width: 100%;
+            font-size: 1rem;
+        }
+        .popup-confirm-btn:hover { background-color: #2563eb; }
+        .popup-error-message {
+            color: #ef4444; font-size: 0.875rem; margin-top: 0.75rem;
+            min-height: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="welcome-popup" class="popup-overlay">
+        <div class="popup-content">
+            <h2>불당고등학교</h2>
+            <p class="welcome-message">유선종 선생님의 학습 자료입니다.<br>비밀번호를 입력해주세요.</p>
+            <input type="password" id="popup-password" class="popup-password-input" placeholder="비밀번호">
+            <button id="popup-confirm" class="popup-confirm-btn">확인</button>
+            <p id="popup-error" class="popup-error-message"></p>
+        </div>
+    </div>
+    <div class="quiz-container">
+        <h1>2.2.2 물질의 전기적 성질</h1>
+        <div class="page-info" id="page-info"></div>
+        <div id="quiz">
+            </div>
+        <div class="pagination-controls" id="pagination-controls">
+            </div>
+        <button id="submit-page-btn" class="action-button w-full sm:w-auto mx-auto block">이번 페이지 채점하기</button>
+        <div class="score-section" id="score-section" style="display: none;">
+            <p class="score-text quiz-title-in-score" id="quiz-main-title-in-score"></p>
+            <p class="score-text" id="current-page-score-text"></p>
+            <p class="score-text" id="total-score-text"></p>
+            <p class="motivational-quote" id="motivational-quote" style="display: none;"></p>
+        </div>
+    </div>
+
+    <script>
+        // 문제 데이터
+        const questions = [
+            { id: 1, type: 'fill-in', text: "1. 물질들은 결합 규칙에 따라 ( ), ( ), ( ) 등 성질이 다르다.", answer: "녹는점;강도;전기전도성", options: ["녹는점;강도;전기전도성", "색깔;무게;부피", "온도;압력;밀도", "형태;질감;맛"], explanation: "원자들의 화학 결합 방식(이온, 공유, 금속 결합)이 물질의 녹는점, 강도, 전기 전도성 등 고유한 성질을 결정합니다." },
+            { id: 2, type: 'fill-in', text: "2. ( ), ( ), ( )등과 같이 전류가 잘 흐르는 물질을 ( )라 한다.", answer: "금;은;구리;도체", options: ["유리;플라스틱;고무;부도체", "규소;저마늄;갈륨;반도체", "금;은;구리;도체", "물;소금물;설탕물;전해질"], explanation: "금, 은, 구리, 알루미늄과 같은 금속 물질들은 자유전자가 많아 전류가 매우 잘 흐르며, 이를 도체라고 합니다." },
+            { id: 3, type: 'fill-in', text: "3. ( ), ( ), ( )등과 같이 전류가 거의 흐르지 않는 물질을 ( )라한다.", answer: "유리;고무;플라스틱;부도체", options: ["철;구리;알루미늄;도체", "유리;고무;플라스틱;부도체", "규소;저마늄;갈륨;반도체", "소금;설탕;나프탈렌;절연체"], explanation: "전자가 원자에 강하게 묶여 있어 자유롭게 이동할 수 없는 물질로, 절연체라고도 합니다." },
+            { id: 4, type: 'fill-in', text: "4. ( ), ( )과 같이 전기적 성질이 중간인 물질을 ( )라 한다.", answer: "규소;저마늄;반도체", options: ["규소;저마늄;반도체", "유리;다이아몬드;부도체", "구리;알루미늄;도체", "플라스틱;나무;절연체"], explanation: "반도체는 평소에는 부도체와 비슷하지만, 특정 조건(불순물 첨가, 빛, 열 등)에서 전기 전도성이 생기는 물질입니다." },
+            { id: 5, type: 'ox', text: "5. 규산염 광물에 쓰이는 규소로 반도체를 만든다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 지각에 풍부한 규소(Si)를 정제하여 반도체의 주재료로 사용합니다." },
+            { id: 6, type: 'fill-in', text: "6. 원자에 ( )이나 ( )을 가하면 전자가 에너지를 얻어 자유전자가 된다.", answer: "빛;열", options: ["힘;압력", "소리;진동", "빛;열", "전기;자기"], explanation: "외부에서 에너지를 공급하면 원자에 묶여있던 전자가 에너지를 흡수하여 원자로부터 탈출해 자유전자가 될 수 있습니다." },
+            { id: 7, type: 'ox', text: "7. 태양 전지는 열을 받아 전류가 흐르는 장치이다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 태양 전지는 '빛' 에너지를 받아 전자를 발생시켜 전류를 흐르게 하는 장치입니다." },
+            { id: 8, type: 'fill-in', text: "8. 태양 전지는 태양의 ( )을 받아 전류가 흐르는 장치이다.", answer: "빛", options: ["열", "빛", "중력", "압력"], explanation: "반도체에 빛을 쪼이면 전자와 양공이 생겨나 전압이 발생하고 전류가 흐르는 광전 효과를 이용합니다." },
+            { id: 9, type: 'fill-in', text: "9. 도체는 ( )의 수가 많아 전류가 잘 흐른다.", answer: "자유전자", options: ["원자핵", "양성자", "중성자", "자유전자"], explanation: "자유전자는 원자에 얽매이지 않고 금속 내부를 자유롭게 이동하며 전류(전하의 흐름)를 만듭니다." },
+            { id: 10, type: 'fill-in', text: "10. 전선 피복으로 적절한 물질은 ( )이다.", answer: "부도체", options: ["도체", "반도체", "부도체", "초전도체"], explanation: "전류가 바깥으로 새어나가는 것을 막기 위해 전기가 통하지 않는 고무나 플라스틱 같은 부도체로 감쌉니다." },
+            { id: 11, type: 'fill-in', text: "11. 순수한 반도체는 주로 ( )로 만든다.", answer: "규소", options: ["구리", "철", "규소", "알루미늄"], explanation: "4족 원소인 규소(Si)나 저마늄(Ge)을 매우 높은 순도로 정제하여 순수 반도체를 만듭니다." },
+            { id: 12, type: 'fill-in', text: "12. 순수한 반도체는 전기 전도성이 불순물 반도체 보다 ( )", answer: "낮다", options: ["높다", "낮다", "같다", "비교할수없다"], explanation: "순수 반도체는 전류를 운반하는 전하가 매우 적어 전기 전도성이 매우 낮습니다. 불순물을 첨가(도핑)하여 전기 전도도를 높여 사용합니다." },
+            { id: 13, type: 'fill-in', text: "13. 절연 장갑은 부도체를 활용하고 피뢰침은 ( )를 활용한다.", answer: "도체", options: ["도체", "반도체", "부도체", "초전도체"], explanation: "피뢰침은 번개의 강한 전류를 땅으로 안전하게 흘려보내야 하므로 전기 전도성이 좋은 도체(구리 등)를 사용합니다." },
+            { id: 14, type: 'fill-in', text: "14. 정전기 방지 패드는 ( )를 활용한다.", answer: "도체", options: ["도체", "반도체", "부도체", "절연체"], explanation: "몸에 쌓인 정전기를 전기가 잘 통하는 도체를 통해 빠르게 방전시키는 원리입니다." },
+            { id: 15, type: 'ox', text: "15. 반도체 기판의 표면은 반도체를 활용한다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 반도체 회로 기판(PCB)의 표면은 회로 간의 간섭이나 합선을 막기 위해 전기가 통하지 않는 부도체(절연체)로 코팅합니다." },
+            { id: 16, type: 'fill-in', text: "16. 반도체 기판의 표면은 오작동을 막기 위해 ( )를 활용한다.", answer: "부도체", options: ["도체", "반도체", "부도체", "전도체"], explanation: "각 회로가 서로 영향을 주지 않고 독립적으로 작동하도록 절연성이 좋은 부도체로 표면을 덮습니다." },
+            { id: 17, type: 'ox', text: "17. 특정 반도체는 전류가 흐를 때 빛을 내기도 한다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 발광 다이오드(LED)는 순방향 전압이 걸려 전류가 흐를 때 빛을 내는 반도체 소자입니다." },
+            { id: 18, type: 'ox', text: "18. 특정 반도체는 빛을 받으면 전류가 흐르기도 한다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 광다이오드나 태양 전지는 빛 에너지를 전기 에너지로 변환하는 반도체 소자입니다." },
+            { id: 19, type: 'ox', text: "19. 각종 영상 표시 장치, 조명 장치에는 전류가 잘 흐르는 도체를 쓴다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. LED, OLED와 같은 영상 표시 장치나 조명 장치에는 전류가 흐를 때 빛을 내는 반도체의 성질을 이용합니다." },
+            { id: 20, type: 'fill-in', text: "20. p형 반도체는 주로 ( )이 전류를 흐르게 한다.", answer: "양공", options: ["자유전자", "양공", "원자핵", "광자"], explanation: "p형 반도체는 원자가전자가 하나 부족한 상태인 양공(+)이 주된 전하 운반체 역할을 합니다." },
+            { id: 21, type: 'fill-in', text: "21. p형 반도체는 순수 반도체에 ( )족 원소를 첨가하여 만든다.", answer: "13", options: ["13", "14", "15", "16"], explanation: "원자가전자가 3개인 13족 원소(붕소, 알루미늄 등)를 첨가하면, 규소와 결합 시 전자가 하나 부족한 구멍(양공)이 생깁니다." },
+            { id: 22, type: 'fill-in', text: "22. n형 반도체는 주로 ( )가 전류를 흐르게 한다.", answer: "자유전자", options: ["자유전자", "양공", "양성자", "중성자"], explanation: "n형 반도체는 남는 전자인 자유전자(-)가 주된 전하 운반체 역할을 합니다." },
+            { id: 23, type: 'fill-in', text: "23. n형 반도체는 순수 반도체에 ( )족 원소를 첨가하여 만든다.", answer: "15", options: ["13", "14", "15", "16"], explanation: "원자가전자가 5개인 15족 원소(인, 비소 등)를 첨가하면, 규소와 결합 시 전자 1개가 남아 자유전자가 됩니다." },
+            { id: 24, type: 'fill-in', text: "24. 순수 반도체에 불순물을 첨가하는 과정을 ( )이라 한다.", answer: "도핑", options: ["합금", "증착", "도핑", "식각"], explanation: "도핑 과정을 통해 반도체의 전기 전도도를 조절할 수 있습니다." },
+            { id: 25, type: 'ox', text: "25. 순수 반도체는 불순물 반도체보다 전류가 잘 통한다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 도핑을 통해 전하 운반체(자유전자, 양공)를 인위적으로 만든 불순물 반도체가 순수 반도체보다 전류가 훨씬 잘 통합니다." },
+            { id: 26, type: 'fill-in', text: "26. p-n접합 다이오드는 ( )를 ( )로 바꾸는 역할을 한다.", answer: "교류;직류", options: ["직류;교류", "교류;직류", "전압;전류", "전류;전압"], explanation: "다이오드는 한쪽 방향으로만 전류를 흐르게 하는 성질(정류 작용)을 이용하여 방향이 계속 바뀌는 교류를 한쪽으로만 흐르는 직류로 바꿔줍니다." },
+            { id: 27, type: 'fill-in', text: "27. 교류를 직류로 변환하는 것을 ( )이라한다.", answer: "정류작용", options: ["증폭작용", "스위칭작용", "정류작용", "변압작용"], explanation: "다이오드의 가장 중요한 기능 중 하나입니다." },
+            { id: 28, type: 'fill-in', text: "28. p-n 접합 다이오드에서 전류가 통할 때를 ( )전압이라 한다.", answer: "순방향", options: ["순방향", "역방향", "교류", "직류"], explanation: "순방향 전압이 걸리면 p형 반도체의 양공과 n형 반도체의 자유전자가 접합면으로 이동하여 전류가 흐릅니다." },
+            { id: 29, type: 'fill-in', text: "29. p-n 접합 다이오드에서 전류가 흐르지 않을 때를 ( )전압이라 한다.", answer: "역방향", options: ["순방향", "역방향", "교류", "직류"], explanation: "역방향 전압이 걸리면 양공과 자유전자가 접합면에서 멀어져 전류가 거의 흐르지 않습니다." },
+            { id: 30, type: 'ox', text: "30. p-n 접합 다이오드에서 p형에 +극을 연결하면 전류가 통한다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. p형에 (+)극, n형에 (-)극을 연결하는 것이 순방향 전압입니다." },
+            { id: 31, type: 'ox', text: "31. p-n 접합 다이오드에서 p형에 +극을 연결하면 역방향 전압이 걸린다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. p형에 (+)극을 연결하는 것은 순방향 전압입니다." },
+            { id: 32, type: 'ox', text: "32. 순방향 전압이 걸리면 양공과 자유 전자는 p-n 접합 다이오드의 접합부로 이동한다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 양공은 (-)극 쪽으로, 자유전자는 (+)극 쪽으로 이동하면서 접합부에서 만나 전류를 흐르게 합니다." },
+            { id: 33, type: 'fill-in', text: "33. 다이오드는 불순물 반도체 ( )개가 쓰인다.", answer: "2", options: ["1", "2", "3", "4"], explanation: "p형 반도체 1개와 n형 반도체 1개를 접합하여 만듭니다." },
+            { id: 34, type: 'fill-in', text: "34. 트랜지스터는 불순물 반도체 ( )개가 쓰인다.", answer: "3", options: ["1", "2", "3", "4"], explanation: "p-n-p 또는 n-p-n 구조로 3개의 불순물 반도체를 접합하여 만듭니다." },
+            { id: 35, type: 'fill-in', text: "35. 트랜지스터에는 pnp 와 ( )이 있으며 ( )과 ( )작용을 한다.", answer: "npn;증폭;스위칭", options: ["npn;정류;증폭", "npn;증폭;스위칭", "pnp;정류;스위칭", "nn-p;증폭;변환"], explanation: "트랜지스터는 작은 전류를 큰 전류로 키우는 증폭 작용과, 전류를 흐르게 하거나 차단하는 스위칭 작용을 합니다." }
+        ];
+        // 명언 목록
+        const motivationalQuotes = [
+            "오늘의 노력이 내일의 너를 만든다.", "포기하지 않는 한, 실패는 없다.", "가장 큰 위험은 아무 위험도 감수하지 않는 것이다.",
+            "배움은 의무도, 생존도 아니다. 그것은 우리의 가장 큰 특권이다.", "성공은 최종 목적지가 아니며, 실패는 치명적이지 않다. 중요한 것은 계속 나아가는 용기다.",
+            "작은 성공들이 모여 큰 성공을 이룬다.", "어제보다 나은 오늘, 오늘보다 나은 내일을 만들자.",
+            "가장 큰 영광은 한 번도 실패하지 않음이 아니라 실패할 때마다 다시 일어서는 데에 있다.", "천리길도 한 걸음부터.", "노력은 결코 배신하지 않는다."
+        ];
+
+        const quizElement = document.getElementById('quiz');
+        const paginationControlsElement = document.getElementById('pagination-controls');
+        const submitPageButton = document.getElementById('submit-page-btn');
+        const scoreSectionElement = document.getElementById('score-section');
+        const currentPageScoreTextElement = document.getElementById('current-page-score-text');
+        const totalScoreTextElement = document.getElementById('total-score-text');
+        const pageInfoElement = document.getElementById('page-info');
+        const quizMainTitleDisplayElement = document.getElementById('quiz-main-title-in-score');
+        const motivationalQuoteElement = document.getElementById('motivational-quote');
+        
+        const welcomePopup = document.getElementById('welcome-popup');
+        const popupPasswordInput = document.getElementById('popup-password');
+        const popupConfirmButton = document.getElementById('popup-confirm');
+        const popupErrorMessage = document.getElementById('popup-error');
+
+        const correctPassword = "0407";
+
+        const questionsPerPage = 10;
+        let currentPage = 0;
+        let pageScores = [];
+        let pageAttempted = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function initializeQuizData() {
+            questions.forEach(q => {
+                q.userAnswer = null;
+                q.isCorrect = null;
+                q.attemptedThisSession = false;
+                if (q.answer && q.answer.includes(';')) {
+                    q.answersArray = q.answer.split(';');
+                } else if (q.answer) {
+                    q.answersArray = [q.answer];
+                } else {
+                    q.answersArray = [];
+                }
+                if (q.type !== 'ox') {
+                   shuffleArray(q.options);
+                }
+            });
+            const numPages = Math.ceil(questions.length / questionsPerPage);
+            pageAttempted = new Array(numPages).fill(false);
+            pageScores = new Array(numPages).fill(0);
+        }
+
+        function renderQuestionsForPage(page) {
+            quizElement.innerHTML = '';
+            currentPage = page;
+
+            const start = page * questionsPerPage;
+            const end = Math.min(start + questionsPerPage, questions.length);
+            const questionsOnPage = questions.slice(start, end);
+
+            pageInfoElement.textContent = `총 ${questions.length}문제 중 ${start + 1} - ${end}번 문제`;
+
+            questionsOnPage.forEach((q, indexOnPage) => {
+                const questionCard = document.createElement('div');
+                questionCard.classList.add('question-card');
+                questionCard.id = `question-${q.id}`;
+
+                const questionText = document.createElement('p');
+                questionText.classList.add('question-text');
+                let processedText = q.text.replace(/\d+\.\s*/, (match) => `<span class="font-bold">${match}</span>`);
+                
+                processedText = processedText.replace(/(\(\s*\))/g, '<span class="blank-emphasis">( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</span>');
+                
+                // Handle multiple blanks
+                let blankIndex = 0;
+                processedText = processedText.replace(/<span class="blank-emphasis">\( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \)<\/span>/g, () => {
+                    if (q.answersArray && q.answersArray.length > 1 && q.answersArray[blankIndex]) {
+                        const blankText = `( ${"&nbsp;".repeat(q.answersArray[blankIndex].length * 2)} )`;
+                        blankIndex++;
+                        return `<span class="blank-emphasis">${blankText}</span>`;
+                    }
+                    return '<span class="blank-emphasis">( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</span>';
+                });
+
+                questionText.innerHTML = processedText.replace(/\u00b3/g, '<sup>3</sup>');
+                questionCard.appendChild(questionText);
+
+                const optionsContainer = document.createElement('div');
+                optionsContainer.classList.add('options');
+
+                q.options.forEach((option, index) => {
+                    const optionId = `q${q.id}-option-${index}`;
+                    
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.id = optionId;
+                    radioInput.name = `question-${q.id}`;
+                    radioInput.value = option;
+                    radioInput.classList.add('option-input', 'hidden');
+                    if (q.userAnswer === option) radioInput.checked = true;
+                    if (pageAttempted[currentPage]) radioInput.disabled = true;
+
+                    const optionLabel = document.createElement('label');
+                    optionLabel.htmlFor = optionId;
+                    optionLabel.innerHTML = option.includes(';') ? option.split(';').join(', ') : option.replace(/\u00b3/g, '<sup>3</sup>');
+                    optionLabel.classList.add('option-label');
+                    if (pageAttempted[currentPage]) optionLabel.classList.add('opacity-70', 'cursor-not-allowed');
+
+                    optionsContainer.appendChild(radioInput);
+                    optionsContainer.appendChild(optionLabel);
+                });
+                questionCard.appendChild(optionsContainer);
+
+                const feedbackElement = document.createElement('div');
+                feedbackElement.classList.add('feedback');
+                feedbackElement.style.display = 'none';
+                questionCard.appendChild(feedbackElement);
+                
+                if (pageAttempted[currentPage] && q.attemptedThisSession) {
+                    showFeedbackForQuestion(q, questionCard);
+                }
+                quizElement.appendChild(questionCard);
+            });
+
+            const numPages = Math.ceil(questions.length / questionsPerPage);
+            if (numPages > 1) {
+                paginationControlsElement.style.display = 'flex';
+                renderPaginationControls();
+            } else {
+                paginationControlsElement.style.display = 'none';
+            }
+
+            submitPageButton.disabled = pageAttempted[currentPage];
+            if (pageAttempted[currentPage]) {
+                submitPageButton.textContent = '채점 완료';
+                scoreSectionElement.style.display = 'block';
+                updateScoreDisplay();
+                showMotivationalQuote();
+            } else {
+                submitPageButton.textContent = '이번 페이지 채점하기';
+                motivationalQuoteElement.style.display = 'none';
+                if (questionsOnPage.length > 0) {
+                    scoreSectionElement.style.display = 'none';
+                } else {
+                    scoreSectionElement.style.display = 'block';
+                    currentPageScoreTextElement.textContent = '이번 페이지에 문제가 없습니다.';
+                    totalScoreTextElement.textContent = '';
+                }
+            }
+        }
+        
+        function showFeedbackForQuestion(question, questionCard) {
+            const feedbackElement = questionCard.querySelector('.feedback');
+            if (!feedbackElement) return;
+
+            feedbackElement.innerHTML = '';
+            const correctAnswerText = question.answersArray.join(', ');
+
+            if (question.isCorrect) {
+                feedbackElement.innerHTML = '<strong class="font-semibold">정답입니다!</strong> 🎉';
+                feedbackElement.className = 'feedback correct';
+            } else {
+                feedbackElement.innerHTML = `<strong class="font-semibold">오답입니다.</strong> 정답은 "<span class="font-bold text-red-700">${correctAnswerText.replace(/\u00b3/g, '<sup>3</sup>')}</span>"입니다.`;
+                feedbackElement.className = 'feedback incorrect';
+            }
+
+            const explanationElement = document.createElement('p');
+            explanationElement.classList.add('explanation');
+            explanationElement.innerHTML = `<strong class="font-semibold">해설:</strong> ${question.explanation}`;
+            feedbackElement.appendChild(explanationElement);
+            feedbackElement.style.display = 'block';
+        }
+
+        function renderPaginationControls() {
+            paginationControlsElement.innerHTML = '';
+            const numPages = Math.ceil(questions.length / questionsPerPage);
+
+            const prevButton = document.createElement('button');
+            prevButton.textContent = '이전';
+            prevButton.disabled = currentPage === 0;
+            prevButton.onclick = () => renderQuestionsForPage(currentPage - 1);
+            paginationControlsElement.appendChild(prevButton);
+
+            for (let i = 0; i < numPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i + 1;
+                pageButton.classList.add('page-number');
+                if (i === currentPage) {
+                    pageButton.classList.add('current');
+                }
+                pageButton.onclick = () => renderQuestionsForPage(i);
+                paginationControlsElement.appendChild(pageButton);
+            }
+
+            const nextButton = document.createElement('button');
+            nextButton.textContent = '다음';
+            nextButton.disabled = currentPage === numPages - 1;
+            nextButton.onclick = () => renderQuestionsForPage(currentPage + 1);
+            paginationControlsElement.appendChild(nextButton);
+        }
+
+        function showMotivationalQuote() {
+            const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
+            motivationalQuoteElement.textContent = motivationalQuotes[randomIndex];
+            motivationalQuoteElement.style.display = 'block';
+        }
+
+        submitPageButton.addEventListener('click', () => {
+            if (pageAttempted[currentPage]) return;
+
+            let scoreForThisPage = 0;
+            
+            const start = currentPage * questionsPerPage;
+            const end = Math.min(start + questionsPerPage, questions.length);
+            const questionsOnPage = questions.slice(start, end);
+
+            questionsOnPage.forEach((q, indexOnPage) => {
+                const questionCard = quizElement.children[indexOnPage];
+                const selectedOptionInput = questionCard.querySelector(`input[name="question-${q.id}"]:checked`);
+                
+                q.attemptedThisSession = true;
+
+                if (selectedOptionInput) {
+                    q.userAnswer = selectedOptionInput.value;
+                    q.isCorrect = (q.userAnswer === q.answer);
+                    
+                    if (q.isCorrect) {
+                        scoreForThisPage++;
+                    }
+                    showFeedbackForQuestion(q, questionCard);
+
+                    const radioInputs = questionCard.querySelectorAll('input[type="radio"]');
+                    radioInputs.forEach(input => input.disabled = true);
+                } else {
+                    const feedbackElement = questionCard.querySelector('.feedback');
+                    feedbackElement.textContent = '답을 선택하지 않았습니다.';
+                    feedbackElement.className = 'feedback incorrect';
+                    feedbackElement.style.display = 'block';
+                    q.isCorrect = false;
+                }
+            });
+            
+            pageScores[currentPage] = scoreForThisPage;
+            pageAttempted[currentPage] = true;
+            submitPageButton.disabled = true;
+            submitPageButton.textContent = '채점 완료';
+            
+            scoreSectionElement.style.display = 'block';
+            updateScoreDisplay();
+            showMotivationalQuote();
+
+            const quizContainerElement = document.querySelector('.quiz-container');
+            if (quizContainerElement) {
+                quizContainerElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+
+        function updateScoreDisplay() {
+            const questionsOnThisPageCount = Math.min(questionsPerPage, questions.length - (currentPage * questionsPerPage));
+            currentPageScoreTextElement.textContent = `이번 페이지 점수: ${pageScores[currentPage]} / ${questionsOnThisPageCount}`;
+            
+            let currentTotalScore = 0;
+            let currentTotalAttemptedQuestions = 0;
+            for(let i=0; i < pageAttempted.length; i++){
+                if(pageAttempted[i]){
+                    const start = i * questionsPerPage;
+                    const end = Math.min(start + questionsPerPage, questions.length);
+                    currentTotalAttemptedQuestions += (end-start);
+                    currentTotalScore += pageScores[i];
+                }
+            }
+
+            const quizTitleElement = document.querySelector('h1');
+            let quizMainTitle = "현재 단원";
+            if (quizTitleElement) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = quizTitleElement.innerHTML;
+                quizMainTitle = tempDiv.textContent || tempDiv.innerText || "";
+                const titleParts = quizMainTitle.split('(');
+                if (titleParts.length > 0) {
+                    quizMainTitle = titleParts[0].trim();
+                }
+            }
+            
+            if (quizMainTitleDisplayElement) {
+                quizMainTitleDisplayElement.textContent = quizMainTitle;
+            }
+
+            if (currentTotalAttemptedQuestions > 0) {
+                 totalScoreTextElement.style.display = 'block';
+                 totalScoreTextElement.textContent = `총 누적 점수: ${currentTotalScore} / ${currentTotalAttemptedQuestions}`;
+            } else {
+                 totalScoreTextElement.style.display = 'none';
+            }
+        }
+        
+        // 팝업 기능
+        window.onload = () => {
+            if (welcomePopup) {
+                // 각 퀴즈 페이지마다 고유한 sessionStorage 키 사용
+                const popupSessionKey = 'appiaQuizPasswordEntered_buldang_electrical';
+                const popupShownThisSession = sessionStorage.getItem(popupSessionKey);
+                if (!popupShownThisSession) {
+                    welcomePopup.classList.add('show');
+                } else {
+                    initializeQuizData();
+                    renderQuestionsForPage(0);
+                }
+            } else {
+                initializeQuizData();
+                renderQuestionsForPage(0);
+            }
+        };
+
+        if (popupConfirmButton) {
+            popupConfirmButton.addEventListener('click', () => {
+                if (popupPasswordInput.value === correctPassword) {
+                    if (welcomePopup) {
+                        welcomePopup.classList.remove('show');
+                    }
+                    const popupSessionKey = 'appiaQuizPasswordEntered_buldang_electrical';
+                    sessionStorage.setItem(popupSessionKey, 'true');
+                    initializeQuizData();
+                    renderQuestionsForPage(0);
+                } else {
+                    if (popupErrorMessage) {
+                        popupErrorMessage.textContent = "비밀번호가 틀렸습니다. 다시 시도해주세요.";
+                    }
+                    popupPasswordInput.value = '';
+                    popupPasswordInput.focus();
+                }
+            });
+        }
+        
+        if (popupPasswordInput) {
+            popupPasswordInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    popupConfirmButton.click();
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>
