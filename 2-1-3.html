@@ -7,198 +7,40 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f0f4f8;
-        }
-        .quiz-container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 1.5rem;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        .question-card {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        .question-text {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #2d3748;
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-        .question-text .blank-emphasis {
-            font-weight: bold;
-            color: #3b82f6;
-        }
-        .option-label {
-            display: block;
-            padding: 0.75rem 1rem;
-            margin-bottom: 0.5rem;
-            border: 1px solid #cbd5e0;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s;
-            background-color: #f7fafc;
-        }
-        .option-label:hover {
-            background-color: #e2e8f0;
-        }
-        .option-input:checked + .option-label {
-            background-color: #4299e1;
-            color: white;
-            border-color: #2b6cb0;
-        }
-        .feedback {
-            margin-top: 1rem;
-            padding: 0.75rem;
-            border-radius: 6px;
-            font-size: 0.95rem;
-        }
-        .feedback.correct {
-            background-color: #c6f6d5;
-            color: #2f855a;
-            border: 1px solid #9ae6b4;
-        }
-        .feedback.incorrect {
-            background-color: #fed7d7;
-            color: #c53030;
-            border: 1px solid #fbb6ce;
-        }
-        .explanation {
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            color: #4a5568;
-            line-height: 1.5;
-        }
-        .action-button {
-            background-color: #4a5568;
-            color: white;
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            border: none;
-            margin-top: 1rem;
-            margin-right: 0.5rem;
-        }
-        .action-button:hover:not(:disabled) {
-            background-color: #2d3748;
-        }
-        .action-button:disabled {
-            background-color: #a0aec0;
-            cursor: not-allowed;
-        }
-        .pagination-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-        .pagination-controls button, .pagination-controls span {
-            margin: 0 0.25rem;
-            padding: 0.5rem 0.75rem;
-            border: 1px solid #cbd5e0;
-            border-radius: 4px;
-            background-color: #fff;
-            cursor: pointer;
-        }
-        .pagination-controls button:disabled {
-            background-color: #e2e8f0;
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-        .pagination-controls .page-number.current {
-            background-color: #4299e1;
-            color: white;
-            border-color: #2b6cb0;
-            font-weight: bold;
-        }
-        .score-section {
-            margin-top: 1.5rem;
-            padding: 1.5rem;
-            background-color: #e9f5ff;
-            border-radius: 8px;
-            text-align: left;
-        }
-        .score-text {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #1a202c;
-            margin-bottom: 0.5rem;
-        }
-        .quiz-title-in-score {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #1e40af;
-            margin-bottom: 0.75rem;
-        }
-        .motivational-quote {
-            font-size: 1rem;
-            font-style: italic;
-            color: #374151;
-            margin-top: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px dashed #cbd5e0;
-            text-align: center;
-        }
-        h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #1a202c;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        .page-info {
-            text-align: center;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            color: #4a5568;
-        }
-        .popup-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.6); display: flex;
-            justify-content: center; align-items: center; z-index: 1000;
-            opacity: 0; visibility: hidden;
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-        }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f0f4f8; }
+        .quiz-container { max-width: 800px; margin: 2rem auto; padding: 1.5rem; background-color: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .question-card { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
+        .question-text { font-size: 1.1rem; font-weight: 500; color: #2d3748; margin-bottom: 1rem; line-height: 1.6; }
+        .question-text .blank-emphasis { font-weight: bold; color: #3b82f6; }
+        .option-label { display: block; padding: 0.75rem 1rem; margin-bottom: 0.5rem; border: 1px solid #cbd5e0; border-radius: 6px; cursor: pointer; transition: background-color 0.2s, border-color 0.2s; background-color: #f7fafc; }
+        .option-label:hover { background-color: #e2e8f0; }
+        .option-input:checked + .option-label { background-color: #4299e1; color: white; border-color: #2b6cb0; }
+        .feedback { margin-top: 1rem; padding: 0.75rem; border-radius: 6px; font-size: 0.95rem; }
+        .feedback.correct { background-color: #c6f6d5; color: #2f855a; border: 1px solid #9ae6b4; }
+        .feedback.incorrect { background-color: #fed7d7; color: #c53030; border: 1px solid #fbb6ce; }
+        .explanation { margin-top: 0.5rem; font-size: 0.9rem; color: #4a5568; line-height: 1.5; }
+        .action-button { background-color: #4a5568; color: white; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; border: none; margin-top: 1rem; margin-right: 0.5rem; }
+        .action-button:hover:not(:disabled) { background-color: #2d3748; }
+        .action-button:disabled { background-color: #a0aec0; cursor: not-allowed; }
+        .pagination-controls { display: flex; justify-content: center; align-items: center; margin-top: 2rem; margin-bottom: 1rem; }
+        .pagination-controls button, .pagination-controls span { margin: 0 0.25rem; padding: 0.5rem 0.75rem; border: 1px solid #cbd5e0; border-radius: 4px; background-color: #fff; cursor: pointer; }
+        .pagination-controls button:disabled { background-color: #e2e8f0; cursor: not-allowed; opacity: 0.7; }
+        .pagination-controls .page-number.current { background-color: #4299e1; color: white; border-color: #2b6cb0; font-weight: bold; }
+        .score-section { margin-top: 1.5rem; padding: 1.5rem; background-color: #e9f5ff; border-radius: 8px; text-align: left; }
+        .score-text { font-size: 1.1rem; font-weight: 500; color: #1a202c; margin-bottom: 0.5rem; }
+        .quiz-title-in-score { font-size: 1.1rem; font-weight: bold; color: #1e40af; margin-bottom: 0.75rem; }
+        .motivational-quote { font-size: 1rem; font-style: italic; color: #374151; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed #cbd5e0; text-align: center; }
+        h1 { font-size: 1.8rem; font-weight: 700; color: #1a202c; text-align: center; margin-bottom: 1.5rem; }
+        .page-info { text-align: center; margin-bottom: 1rem; font-size: 0.9rem; color: #4a5568; }
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; }
         .popup-overlay.show { opacity: 1; visibility: visible; }
-        .popup-content {
-            background-color: white; padding: 2.5rem; border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); text-align: center;
-            max-width: 420px; width: 90%;
-        }
-        .popup-content h2 {
-            font-size: 1.75rem; font-weight: 700; color: #1a202c; margin-bottom: 1rem;
-        }
-        .popup-content p.welcome-message {
-            font-size: 1rem; color: #4a5568; margin-bottom: 1.5rem; line-height: 1.6;
-        }
-        .popup-password-input {
-            width: 100%; padding: 0.75rem; margin-bottom: 1rem;
-            border: 1px solid #cbd5e0; border-radius: 6px; font-size: 1rem;
-            box-sizing: border-box;
-        }
-        .popup-confirm-btn {
-            background-color: #3b82f6; color: white; padding: 0.75rem 1.5rem;
-            border-radius: 8px; font-weight: 500; cursor: pointer;
-            transition: background-color 0.2s; border: none; width: 100%;
-            font-size: 1rem;
-        }
+        .popup-content { background-color: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); text-align: center; max-width: 420px; width: 90%; }
+        .popup-content h2 { font-size: 1.75rem; font-weight: 700; color: #1a202c; margin-bottom: 1rem; }
+        .popup-content p.welcome-message { font-size: 1rem; color: #4a5568; margin-bottom: 1.5rem; line-height: 1.6; }
+        .popup-password-input { width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
+        .popup-confirm-btn { background-color: #3b82f6; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; border: none; width: 100%; font-size: 1rem; }
         .popup-confirm-btn:hover { background-color: #2563eb; }
-        .popup-error-message {
-            color: #ef4444; font-size: 0.875rem; margin-top: 0.75rem;
-            min-height: 1.25rem;
-        }
+        .popup-error-message { color: #ef4444; font-size: 0.875rem; margin-top: 0.75rem; min-height: 1.25rem; }
     </style>
 </head>
 <body>
@@ -230,42 +72,92 @@
     <script>
         // 문제 데이터
         const questions = [
-            { id: 1, type: 'fill-in', text: "1. ( )이란 원자가 전자를 잃거나 얻어 형성된 입자를 말한다.", answer: "이온", options: ["원자", "분자", "이온", "원소"], explanation: "원자가 전자를 잃으면 양이온, 얻으면 음이온이 되며, 이렇게 전하를 띠는 입자를 이온이라고 합니다." },
-            { id: 2, type: 'fill-in', text: "2. 금속 원소는 전자를 ( ) 양이온이 되기 쉽다.", answer: "잃고", options: ["얻어", "잃고", "공유하고", "결합하여"], explanation: "금속 원소는 원자가전자 수가 적어 전자를 잃고 양이온이 되려는 경향이 강합니다." },
-            { id: 3, type: 'fill-in', text: "3. 비금속 원소는 전자를 ( ) 음이온이 되기 쉽다.", answer: "얻어", options: ["얻어", "잃고", "방출하고", "흡수하여"], explanation: "비금속 원소는 원자가전자 수가 많아 전자를 얻어 음이온이 되려는 경향이 강합니다." },
-            { id: 4, type: 'fill-in', text: "4. 양이온과 음이온 사이의 ( )인력으로 형성된 결합을 ( )이라 한다.", answer: "정전기적;이온결합", options: ["자기력;공유결합", "정전기적;이온결합", "만유인력;금속결합", "핵력;공유결합"], explanation: "서로 다른 전하를 띤 양이온과 음이온이 정전기적 인력으로 강하게 결합하는 것을 이온 결합이라고 합니다." },
-            { id: 5, type: 'fill-in', text: "5. 이온 결합은 주로 ( )원소와 ( )원소 사이에서 형성된다.", answer: "금속;비금속", options: ["금속;금속", "비금속;비금속", "금속;비금속", "비활성;금속"], explanation: "전자를 잃기 쉬운 금속 원소와 전자를 얻기 쉬운 비금속 원소 사이에서 이온 결합이 잘 형성됩니다." },
-            { id: 6, type: 'fill-in', text: "6. ( )이란 원자들이 전자를 내놓아 ( )를 형성하고, 이들 사이의 결합을 말한다.", answer: "금속결합;자유전자", options: ["이온결합;양이온", "공유결합;전자쌍", "금속결합;자유전자", "수소결합;음이온"], explanation: "금속 원자들이 내놓은 자유전자들이 양이온들 사이를 자유롭게 돌아다니며 이들을 결합시키는 방식입니다." },
-            { id: 7, type: 'fill-in', text: "7. ( )이란 원자들이 ( )을 형성하여 이루어진 결합을 말한다.", answer: "공유결합;전자쌍", options: ["이온결합;양이온", "공유결합;전자쌍", "금속결합;자유전자", "수소결합;음이온"], explanation: "주로 비금속 원자들이 서로의 원자가전자를 공유하여 전자쌍을 만들고, 이를 통해 안정된 상태를 이루는 결합입니다." },
-            { id: 8, type: 'fill-in', text: "8. 주기율표에서 18족 원소인 ( )는 매우 안정하여 다른 원자와 거의 반응하지 않는다.", answer: "비활성기체", options: ["알칼리금속", "할로젠원소", "비활성기체", "알칼리토금속"], explanation: "비활성 기체는 가장 바깥 전자 껍질에 전자가 모두 채워져 있어 화학적으로 매우 안정합니다." },
-            { id: 9, type: 'fill-in', text: "9. 원자들이 전자를 잃거나 얻거나 공유하여 비활성 기체와 같은 전자배치를 이루려는 규칙을 ( )이라 한다.", answer: "옥텟규칙", options: ["에너지보존법칙", "질량보존법칙", "옥텟규칙", "훈트규칙"], explanation: "원자들이 가장 바깥 전자 껍질에 8개의 전자를 채워 안정해지려는 경향을 옥텟 규칙이라고 합니다." },
-            { id: 10, type: 'ox', text: "10. 이온결합 물질은 상온에서 대부분 고체 상태이다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 양이온과 음이온이 강한 정전기적 인력으로 규칙적인 결정을 이루고 있어 녹는점이 매우 높습니다." },
-            { id: 11, type: 'ox', text: "11. 이온결합 물질은 고체 상태에서 전기 전도성이 있다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 고체 상태에서는 이온들이 결정 격자에 묶여 이동할 수 없어 전기가 통하지 않습니다." },
-            { id: 12, type: 'ox', text: "12. 이온결합 물질은 액체 상태나 수용액 상태에서 전기 전도성이 있다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 액체나 수용액 상태에서는 이온들이 자유롭게 이동할 수 있어 전기가 통합니다." },
-            { id: 13, type: 'ox', text: "13. 이온결합 물질은 힘을 가하면 쉽게 쪼개지거나 부서진다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 외부 힘에 의해 이온층이 밀리면 같은 전하를 띤 이온들이 만나 반발력이 작용하여 쉽게 부서집니다." },
-            { id: 14, type: 'ox', text: "14. 공유결합 물질은 전기 전도성이 항상 없다.", answer: "X", options: ["O", "X"], explanation: "대부분의 공유결합 물질은 전기 전도성이 없지만, 예외적으로 흑연은 전기 전도성이 있습니다." },
-            { id: 15, type: 'fill-in', text: "15. 금속결합 물질은 전기 전도성이 ( ) 열전도성이 ( ).", answer: "크다;크다", options: ["작다;작다", "크다;작다", "작다;크다", "크다;크다"], explanation: "자유전자가 자유롭게 이동하면서 전하(전기)와 열을 쉽게 전달하기 때문입니다." },
-            { id: 16, type: 'fill-in', text: "16. 금속결합 물질은 힘을 가하면 ( )과 ( )이 좋다.", answer: "연성;전성", options: ["탄성;소성", "연성;전성", "취성;소성", "강성;경도"], explanation: "연성(뽑힘성)과 전성(펴짐성)이 좋아 실처럼 가늘게 뽑거나 얇게 펼 수 있습니다. 이는 이온층이 밀려도 자유전자가 계속 결합을 유지해주기 때문입니다." },
-            { id: 17, type: 'ox', text: "17. 물에 잘 녹는 것은 이온결합 물질이다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 물 분자가 양이온과 음이온을 둘러싸 안정화시키기 때문에 대부분 물에 잘 녹습니다." },
-            { id: 18, type: 'ox', text: "18. 원자번호가 같으면 화학적 성질은 같다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 원자번호는 양성자 수를 결정하고, 이는 다시 전자 수를 결정하여 원자의 화학적 성질을 결정합니다." },
-            { id: 19, type: 'ox', text: "19. 질량수가 같으면 화학적 성질이 같다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 화학적 성질은 양성자 수(원자번호)에 의해 결정됩니다. 질량수가 같아도 양성자 수가 다르면 다른 원소입니다." },
-            { id: 20, type: 'fill-in', text: "20. 화학적 성질이 비슷한 원소들은 주기율표에서 같은 ( )에 위치한다.", answer: "족", options: ["주기", "족", "열", "행"], explanation: "같은 족에 속한 원소들은 원자가전자 수가 같아 화학적 성질이 비슷합니다." },
-            { id: 21, type: 'fill-in', text: "21. 원자가 전자를 잃거나 얻어 비활성 기체와 같은 전자 배치를 가지려는 성질 때문에 ( )이 형성된다.", answer: "화학결합", options: ["원자핵", "동위원소", "화학결합", "분자"], explanation: "원자들은 화학 결합을 통해 옥텟 규칙을 만족하고 안정된 상태가 되려고 합니다." },
-            { id: 22, type: 'ox', text: "22. 우주에는 수소와 헬륨이 대부분이지만, 지구에는 규소, 산소, 철, 마그네슘이 대부분이다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 지구는 별의 진화 과정에서 생성된 무거운 원소들이 뭉쳐 만들어졌기 때문에 구성 원소가 우주 전체와 다릅니다." },
-            { id: 23, type: 'fill-in', text: "23. 지각을 구성하는 주요 원소에는 ( )와 ( )이 가장 많다.", answer: "산소;규소", options: ["철;니켈", "수소;헬륨", "산소;규소", "탄소;수소"], explanation: "지각은 규산염 광물이 주성분이므로 산소와 규소가 가장 많습니다." },
-            { id: 24, type: 'fill-in', text: "24. ( )은 규소와 산소가 규칙적으로 결합한 것이다.", answer: "규산염광물", options: ["탄산염광물", "산화광물", "황산염광물", "규산염광물"], explanation: "규산염 광물은 규소(Si) 원자 하나와 산소(O) 원자 4개가 결합한 규산염 사면체를 기본 구조로 합니다." },
-            { id: 25, type: 'fill-in', text: "25. 지각을 구성하는 8대 원소에는 ( ), ( ), 알루미늄, 철, 칼슘, 나트륨, 칼륨, 마그네슘이 있다.", answer: "산소;규소", options: ["수소;헬륨", "산소;규소", "탄소;질소", "철;니켈"], explanation: "지각의 8대 구성 원소는 산소, 규소, 알루미늄, 철, 칼슘, 나트륨, 칼륨, 마그네슘 순입니다." },
-            { id: 26, type: 'fill-in', text: "26. 생명체를 구성하는 주요 원소에는 ( ), ( ), 수소, 질소가 있다.", answer: "산소;탄소", options: ["산소;규소", "철;산소", "산소;탄소", "규소;탄소"], explanation: "생명체는 물과 유기물로 이루어져 있어 산소, 탄소, 수소, 질소가 대부분을 차지합니다." },
-            { id: 27, type: 'fill-in', text: "27. 생명체를 구성하는 기본 물질에는 물, 단백질, 지질, ( ), ( ), 무기염류가 있다.", answer: "탄수화물;핵산", options: ["비타민;효소", "탄수화물;핵산", "지방;아미노산", "포도당;DNA"], explanation: "생명체를 구성하는 6대 영양소는 물, 단백질, 지질, 탄수화물, 핵산, 무기염류입니다." },
-            { id: 28, type: 'fill-in', text: "28. ( )은 생명체의 기본 단위체로 단위체가 결합하여 ( )을 만든다.", answer: "단위체;중합체", options: ["중합체;단위체", "단위체;중합체", "원소;화합물", "화합물;원소"], explanation: "포도당(단위체)이 모여 녹말(중합체)이 되고, 아미노산(단위체)이 모여 단백질(중합체)이 되는 것과 같습니다." },
-            { id: 29, type: 'fill-in', text: "29. 단백질의 단위체는 ( )이다.", answer: "아미노산", options: ["포도당", "뉴클레오타이드", "아미노산", "지방산"], explanation: "20종류의 아미노산이 펩타이드 결합으로 연결되어 다양한 종류의 단백질을 만듭니다." },
-            { id: 30, type: 'fill-in', text: "30. 핵산의 단위체는 ( )이다.", answer: "뉴클레오타이드", options: ["아미노산", "인산", "뉴클레오타이드", "당"], explanation: "뉴클레오타이드는 인산, 당, 염기가 1:1:1로 결합한 물질로, DNA와 RNA의 기본 단위입니다." },
-            { id: 31, type: 'fill-in', text: "31. 탄수화물의 단위체는 ( )이다.", answer: "포도당", options: ["포도당", "아미노산", "지방산", "글리세롤"], explanation: "녹말, 셀룰로스와 같은 다당류 탄수화물의 기본 단위체는 포도당입니다." },
-            { id: 32, type: 'ox', text: "32. 지질은 단위체가 중합체로 된 고분자 물질이다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 지질(중성지방)은 지방산과 글리세롤이 결합한 것이지만, 단위체가 반복적으로 연결된 중합체 구조는 아닙니다." },
-            { id: 33, type: 'fill-in', text: "33. 단위체의 종류와 결합 순서에 따라 ( )의 종류와 기능이 달라진다.", answer: "중합체", options: ["원소", "원자", "단위체", "중합체"], explanation: "예를 들어, 아미노산의 종류와 서열에 따라 수많은 종류의 단백질이 만들어지고 기능이 달라집니다." },
-            { id: 34, type: 'fill-in', text: "34. 지각을 구성하는 대부분의 물질은 ( ) 결합으로 이루어져 있다.", answer: "공유", options: ["이온", "공유", "금속", "수소"], explanation: "지각의 주성분인 규산염 광물은 규소와 산소의 강력한 공유 결합을 기본으로 합니다." },
-            { id: 35, type: 'fill-in', text: "35. 생명체를 구성하는 대부분의 물질은 ( ) 결합으로 이루어져 있다.", answer: "공유", options: ["이온", "공유", "금속", "수소"], explanation: "생명체의 기본 골격을 이루는 유기물(탄소 화합물)은 대부분 탄소 원자 사이의 공유 결합을 기반으로 합니다." },
-            { id: 36, type: 'fill-in', text: "36. 탄소는 원자가 전자가 ( )개 이므로 최대 ( )개의 공유 결합을 할 수 있다.", answer: "4;4", options: ["2;2", "3;3", "4;4", "5;5"], explanation: "탄소는 원자가 전자가 4개이므로, 다른 원자들과 최대 4개의 공유 결합을 형성하여 매우 다양하고 안정한 화합물을 만들 수 있습니다." }
+            { id: 1, type: 'ox', text: "1. 지금까지 알려진 원소는 100가지가 넘는다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 현재까지 알려진 원소는 118종입니다." },
+            { id: 2, type: 'ox', text: "2. 자연에서 발견한 원소는 100가지가 넘는다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 자연에서 발견된 원소는 90여 가지이며, 나머지는 인공적으로 만들어진 원소입니다." },
+            { id: 3, type: 'fill-in', text: "3. 주기율표는 원소들을 ( )순서와 ( )을 기준으로 배열하였다.", answer: "원자번호;화학적 성질", options: ["원자량;물리적 성질", "원자번호;화학적 성질", "질량수;물리적 성질", "원자번호;녹는점"], explanation: "현대의 주기율표는 원자번호 순으로 배열하고, 화학적 성질이 비슷한 원소들이 같은 세로줄에 오도록 합니다." },
+            { id: 4, type: 'fill-in', text: "4. 주기율표의 가로줄을 ( )라 한다.", answer: "주기", options: ["족", "주기", "그룹", "계열"], explanation: "주기율표의 가로줄은 주기이며, 같은 주기의 원소들은 같은 수의 전자 껍질을 가집니다." },
+            { id: 5, type: 'fill-in', text: "5. 주기는 1~ ( )까지 있다.", answer: "7", options: ["7", "8", "17", "18"], explanation: "현재까지 발견된 원소들은 7주기까지 채우고 있습니다." },
+            { id: 6, type: 'fill-in', text: "6. 주기율표의 세로줄을 ( )이라 한다.", answer: "족", options: ["족", "주기", "그룹", "계열"], explanation: "주기율표의 세로줄은 족이며, 같은 족의 원소들은 원자가전자 수가 같아 화학적 성질이 비슷합니다." },
+            { id: 7, type: 'fill-in', text: "7. 족은 1~( )까지 있다.", answer: "18", options: ["7", "8", "17", "18"], explanation: "현대 주기율표는 1족부터 18족까지 있습니다." },
+            { id: 8, type: 'ox', text: "8. 1주기 원소의 개수는 2주기 원소의 개수와 같다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 1주기 원소는 2개(H, He)이고, 2주기 원소는 8개입니다." },
+            { id: 9, type: 'ox', text: "9. 2주기와 3주기 원소의 개수는 같다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 2주기와 3주기 모두 8개의 원소를 가지고 있습니다." },
+            { id: 10, type: 'ox', text: "10. 3주기 원소의 개수는 4주기 원소의 개수보다 작다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 3주기 원소는 8개, 4주기 원소는 18개입니다." },
+            { id: 11, type: 'fill-in', text: "11. H의 원자번호는 ( ), 양성자수는 ( )", answer: "1;1", options: ["1;0", "1;1", "1;2", "2;1"], explanation: "원자번호는 양성자 수와 같으므로, 수소(H)는 원자번호 1번, 양성자 수 1개입니다." },
+            { id: 12, type: 'fill-in', text: "12. He의 원자번호는 ( ), 양성자수는 ( )", answer: "2;2", options: ["2;1", "2;2", "2;3", "2;4"], explanation: "헬륨(He)은 원자번호 2번, 양성자 수 2개입니다." },
+            { id: 13, type: 'ox', text: "13. 비금속 원소는 금속 원소보다 종류가 많다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 주기율표의 대부분을 차지하는 것은 금속 원소입니다." },
+            { id: 14, type: 'fill-in', text: "14. 연필심을 구성하는 ( )은 비금속 원소인 ( )로 이루어져 있지만 전기가 통한다.", answer: "흑연;탄소", options: ["구리;금속", "흑연;탄소", "다이아몬드;탄소", "철;금속"], explanation: "흑연은 탄소(C)라는 비금속 원소로 이루어져 있지만, 자유롭게 움직일 수 있는 전자가 있어 전기가 통하는 예외적인 경우입니다." },
+            { id: 15, type: 'fill-in', text: "15. 외부에서 힘을 가하면 부서지지 않고 모양만 변하는 것은 ( )원소의 특징이다.", answer: "금속", options: ["비금속", "준금속", "금속", "18족"], explanation: "금속은 연성(뽑힘성)과 전성(펴짐성)이 있어 힘을 가해도 잘 부서지지 않고 모양이 변합니다." },
+            { id: 16, type: 'ox', text: "16. 연성과 전성이란 금속원소가 힘을 받았을 때 부서지지 않고 모양만 변하는 것을 뜻한다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 연성은 가늘게 뽑히는 성질, 전성은 얇게 펴지는 성질을 말합니다." },
+            { id: 17, type: 'ox', text: "17. 모든 비금속 원소는 상온에서 기체상태이다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 브로민(액체), 아이오딘/인/황(고체)처럼 상온에서 액체나 고체인 비금속 원소도 많습니다." },
+            { id: 18, type: 'fill-in', text: "18. 성냥에 이용되는 원소는 ( )으로 ( )이다.", answer: "인;비금속 원소", options: ["황;금속 원소", "인;비금속 원소", "칼륨;금속 원소", "염소;비금속 원소"], explanation: "성냥 머리의 붉은 부분에는 인(P)이 포함되어 있으며, 인은 비금속 원소입니다." },
+            { id: 19, type: 'ox', text: "19. 연필심과 다이아몬드를 이루는 원소는 같다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 둘 다 탄소(C)라는 동일한 원소로 이루어져 있지만, 원자의 배열 구조가 달라 성질이 완전히 다릅니다." },
+            { id: 20, type: 'ox', text: "20. 주기율표의 모든 1족 원소는 알칼리 금속이다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 1족 원소인 수소(H)는 비금속 원소이므로 알칼리 금속이 아닙니다." },
+            { id: 21, type: 'ox', text: "21. 수소의 원자가 전자는 1개이다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 수소는 1족 1주기 원소로, 원자가전자가 1개입니다." },
+            { id: 22, type: 'fill-in', text: "22. 알칼리 금속은 ( )가 작아 물에 뜬다.", answer: "밀도", options: ["질량", "밀도", "무게", "부피"], explanation: "리튬, 나트륨, 칼륨 등은 물보다 밀도가 작아서 물 위에 뜹니다." },
+            { id: 23, type: 'ox', text: "23. 알칼리 금속은 공기 중에 보관한다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 반응성이 매우 커서 공기 중의 산소나 수분과 쉽게 반응하므로 공기 중에 보관하면 안 됩니다." },
+            { id: 24, type: 'ox', text: "24. 알칼리 금속은 물 속에 보관한다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 물과 격렬하게 반응하여 수소 기체를 발생시키므로 절대 물 속에 보관하면 안 됩니다." },
+            { id: 25, type: 'fill-in', text: "25. 알칼리 금속은 반응성이 커 공기 중의 ( )와 반응한다.", answer: "산소", options: ["질소", "아르곤", "산소", "헬륨"], explanation: "공기 중의 산소와 쉽게 반응하여 산화물을 만들고 광택을 잃습니다." },
+            { id: 26, type: 'fill-in', text: "26. 알칼리 금속은 ( )나 ( )에 담가 보관한다.", answer: "석유;파라핀", options: ["물;알코올", "석유;파라핀", "질소;아르곤", "염산;황산"], explanation: "산소나 물과의 접촉을 막기 위해 석유나 액체 파라핀 속에 넣어 보관합니다." },
+            { id: 27, type: 'fill-in', text: "27. 알칼리 금속의 밀도는 ( )이 제일 작다.", answer: "리튬", options: ["리튬", "나트륨", "칼륨", "루비듐"], explanation: "알칼리 금속은 일반적으로 원자번호가 커질수록 밀도가 커지는 경향이 있어, 리튬의 밀도가 가장 작습니다." },
+            { id: 28, type: 'fill-in', text: "28. 할로젠 원소는 실온에서 원자 2개가 결합한 ( )형태로 존재한다.", answer: "분자", options: ["원자", "이온", "분자", "결정"], explanation: "할로젠 원소들은 반응성이 커서 혼자 존재하지 않고, 두 개의 원자가 결합한 이원자 분자(F₂, Cl₂ 등) 상태로 존재합니다." },
+            { id: 29, type: 'fill-in', text: "29. F는 ( )이라 읽는다.", answer: "플루오린", options: ["인", "염소", "플루오린", "황"], explanation: "원소기호 F는 플루오린(Fluorine)입니다." },
+            { id: 30, type: 'fill-in', text: "30. 플루오린은 ( )주기 ( )족이다.", answer: "2;17", options: ["1;17", "2;1", "2;17", "3;17"], explanation: "플루오린은 2주기 17족에 속하는 할로젠 원소입니다." },
+            { id: 31, type: 'fill-in', text: "31. Cl은 ( )라 읽는다.", answer: "염소", options: ["브로민", "염소", "칼슘", "탄소"], explanation: "원소기호 Cl은 염소(Chlorine)입니다." },
+            { id: 32, type: 'fill-in', text: "32. 염소는 ( )주기 ( )족 이다.", answer: "3;17", options: ["2;17", "3;1", "3;17", "4;17"], explanation: "염소는 3주기 17족에 속하는 할로젠 원소입니다." },
+            { id: 33, type: 'fill-in', text: "33. Br은 ( )이라 읽는다.", answer: "브로민", options: ["붕소", "베릴륨", "브로민", "바륨"], explanation: "원소기호 Br은 브로민(Bromine)입니다." },
+            { id: 34, type: 'fill-in', text: "34. 브로민은 ( )주기 ( )족 이다.", answer: "4;17", options: ["3;17", "4;1", "4;17", "5;17"], explanation: "브로민은 4주기 17족에 속하는 할로젠 원소입니다." },
+            { id: 35, type: 'fill-in', text: "35. I는 ( )이라 읽는다.", answer: "아이오딘", options: ["철", "이리듐", "아이오딘", "인"], explanation: "원소기호 I는 아이오딘(Iodine)입니다." },
+            { id: 36, type: 'fill-in', text: "36. 아이오딘은 ( )주기 ( )족 이다.", answer: "5;17", options: ["4;17", "5;1", "5;17", "6;17"], explanation: "아이오딘은 5주기 17족에 속하는 할로젠 원소입니다." },
+            { id: 37, type: 'fill-in', text: "37. 할로젠 원소 중 기체 상태에서 보라색을 띠는 것은 ( )이다.", answer: "아이오딘", options: ["플루오린", "염소", "브로민", "아이오딘"], explanation: "아이오딘(I₂)은 상온에서 고체이지만, 가열하면 보라색 기체로 승화합니다." },
+            { id: 38, type: 'fill-in', text: "38. 할로젠 원소 중 기체 상태에서 적갈색을 띠는 것은 (Br₂)이다.", answer: "브로민", options: ["플루오린", "염소", "브로민", "아이오딘"], explanation: "브로민(Br₂)은 상온에서 적갈색의 액체이며, 쉽게 증발하여 적갈색 기체가 됩니다." },
+            { id: 39, type: 'fill-in', text: "39. 할로젠 원소 중 기체 상태에서 노란색을 띠는 것은 (Cl₂)이다.", answer: "염소", options: ["플루오린", "염소", "브로민", "아이오딘"], explanation: "염소(Cl₂)는 상온에서 황록색의 기체입니다." },
+            { id: 40, type: 'fill-in', text: "40. 전자가 특정한 ( )를 가지는 궤도를 ( )이라 한다.", answer: "에너지 준위;전자껍질", options: ["에너지 준위;전자껍질", "궤도;원자가전자", "에너지;전자구름", "준위;오비탈"], explanation: "보어의 원자 모형에 따르면 전자는 불연속적인 에너지 준위를 가지는 특정 궤도(전자 껍질)에만 존재할 수 있습니다." },
+            { id: 41, type: 'fill-in', text: "41. ( )의 원자 모형에서 원자핵과 가까울수록 전자의 에너지 준위는 ( )다.", answer: "보어;낮", options: ["톰슨;높", "러더퍼드;낮", "보어;낮", "보어;높"], explanation: "보어의 원자 모형에서 가장 안쪽 껍질(K껍질)의 에너지 준위가 가장 낮고, 바깥쪽으로 갈수록 높아집니다." },
+            { id: 42, type: 'ox', text: "42. 모든 원자는 두 번째 껍질에 전자가 8개까지 채워진 후 다음 전자 껍질에 전자가 채워진다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 원자번호 19번 칼륨(K)부터는 세 번째 껍질에 8개가 채워진 후 네 번째 껍질에 먼저 전자가 채워집니다." },
+            { id: 43, type: 'ox', text: "43. 1~18번에 해당하는 원자는 두 번째와 세 번째 껍질에 전자가 최대 8개까지 채워진다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 원자번호 20번까지는 안쪽 껍질부터 2개, 8개, 8개 순으로 전자가 채워지는 경향을 따릅니다." },
+            { id: 44, type: 'fill-in', text: "44. ( )란 가장 바깥쪽의 전자 껍질에 채워져 있으며, 원소의 ( )성질과 관련되어 있는 전자이다.", answer: "원자가전자;화학적", options: ["내부전자;물리적", "원자가전자;화학적", "자유전자;전기적", "핵전자;물리적"], explanation: "원자가전자의 수가 원소의 화학적 성질을 결정하는 가장 중요한 요인입니다." },
+            { id: 45, type: 'fill-in', text: "45. 새롭게 발견된 원소의 성질이 알칼리 금속과 비슷하다면 그 원소의 원자가 전자 수는 아마도 ( )개일 것이다.", answer: "1", options: ["1", "2", "7", "8"], explanation: "알칼리 금속(1족)의 화학적 성질은 원자가전자가 1개라는 공통점에서 비롯됩니다." },
+            { id: 46, type: 'fill-in', text: "46. 같은 주기에 속하는 원소는 ( )수가 같다.", answer: "전자껍질", options: ["양성자", "중성자", "원자가전자", "전자껍질"], explanation: "같은 주기의 원소들은 전자가 채워진 전자 껍질 수가 같습니다." },
+            { id: 47, type: 'fill-in', text: "47. 같은 족 원소는 유사한 ( )을 갖는다.", answer: "화학적 성질", options: ["물리적 성질", "화학적 성질", "전자껍질 수", "질량"], explanation: "같은 족 원소들은 원자가전자 수가 같아서 화학적 성질이 비슷합니다." },
+            { id: 48, type: 'ox', text: "48. 모든 원소는 같은 족이면 원자가 전자수가 같다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 이것이 같은 족 원소의 화학적 성질이 비슷한 이유입니다. (단, 18족은 예외적으로 해석하기도 함)" },
+            { id: 49, type: 'ox', text: "49. 모든 원소는 같은 족이면 가장 바깥 전자껍질에 전자 수가 같다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 18족 원소의 경우 헬륨(He)은 2개, 나머지는 8개로 가장 바깥 전자껍질의 전자 수가 다릅니다." },
+            { id: 50, type: 'fill-in', text: "50. ( )란 ( )족 원소를 뜻한다.", answer: "비활성 기체;18", options: ["알칼리 금속;1", "할로젠 원소;17", "비활성 기체;18", "알칼리 토금속;2"], explanation: "주기율표의 18족에 속하는 원소들을 비활성 기체라고 부릅니다." },
+            { id: 51, type: 'fill-in', text: "51. 헬륨의 원자가 전자수는 ( )개이다.", answer: "0", options: ["1", "2", "8", "0"], explanation: "헬륨은 가장 바깥 껍질에 전자가 2개 꽉 차 있어 매우 안정하므로, 화학 반응에 참여하는 원자가전자는 0개로 봅니다." },
+            { id: 52, type: 'fill-in', text: "52. 네온의 원자가 전자수는 ( )개이다.", answer: "0", options: ["2", "8", "10", "0"], explanation: "네온은 가장 바깥 껍질에 전자가 8개 꽉 차 있어 매우 안정하므로, 화학 반응에 참여하는 원자가전자는 0개로 봅니다." },
+            { id: 53, type: 'fill-in', text: "53. 아르곤의 원자가 전자수는 ( )개이다.", answer: "0", options: ["8", "18", "10", "0"], explanation: "아르곤은 가장 바깥 껍질에 전자가 8개 꽉 차 있어 매우 안정하므로, 화학 반응에 참여하는 원자가전자는 0개로 봅니다." },
+            { id: 54, type: 'fill-in', text: "54. 헬륨은 ( )주기 ( )족 원소이다.", answer: "1;18", options: ["1;2", "1;18", "2;2", "2;18"], explanation: "헬륨(He)은 원자번호 2번으로, 1주기 18족에 속합니다." },
+            { id: 55, type: 'fill-in', text: "55. 네온은 ( )주기 ( )족 원소이다.", answer: "2;18", options: ["2;10", "2;18", "3;10", "3;18"], explanation: "네온(Ne)은 원자번호 10번으로, 2주기 18족에 속합니다." },
+            { id: 56, type: 'fill-in', text: "56. 아르곤은 ( )주기 ( )족 원소이다.", answer: "3;18", options: ["3;8", "3;18", "4;8", "4;18"], explanation: "아르곤(Ar)은 원자번호 18번으로, 3주기 18족에 속합니다." },
+            { id: 57, type: 'fill-in', text: "57. 안정한 전자 배치란 첫 번째 껍질에 전자를 ( )개, 두 번째, 세 번째 껍질에 전자를 ( )개까지 가득 채운 상태를 말한다.", answer: "2;8", options: ["2;8", "8;2", "2;18", "8;18"], explanation: "첫 번째 껍질에는 최대 2개, 두 번째와 세 번째 껍질에는 최대 8개의 전자를 채울 때 안정해집니다(옥텟 규칙)." },
+            { id: 58, type: 'fill-in', text: "58. ( )은 광고용 기구를 띄울 때 이용한다.", answer: "헬륨", options: ["수소", "헬륨", "네온", "질소"], explanation: "헬륨은 공기보다 가볍고 불이 붙지 않아 안전하므로 비행선이나 광고용 풍선에 사용됩니다." },
+            { id: 59, type: 'fill-in', text: "59. ( )은 빛을 내는 간판에 이용한다.", answer: "네온", options: ["헬륨", "아르곤", "네온", "질소"], explanation: "네온은 전압을 걸어주면 붉은색의 빛을 내기 때문에 네온사인 간판에 널리 쓰입니다." },
+            { id: 60, type: 'fill-in', text: "60. ( )은 이중창의 유리 사이를 채울 때 이용한다.", answer: "아르곤", options: ["헬륨", "네온", "아르곤", "산소"], explanation: "아르곤은 반응성이 없고 공기보다 열전도율이 낮아 단열 효과를 높이기 위해 이중창 사이에 충전 기체로 사용됩니다." },
+            { id: 61, type: 'fill-in', text: "61. 지구와 생명체를 구성하는 산소, 규소, 탄소, 수소 등의 원소는 ( )족 원소와 같은 전자배치를 이루기 위해 ( )를 잃거나 얻기도 하고 공유 하기도 한다.", answer: "18;전자", options: ["1;전자", "2;양성자", "17;중성자", "18;전자"], explanation: "모든 원자들은 화학 결합을 통해 가장 안정한 18족 비활성 기체와 같은 전자 배치를 이루려는 경향이 있습니다." },
+            { id: 62, type: 'fill-in', text: "62. 금속 원소는 전자를 ( ) ( )이온이 되기 쉽다.", answer: "잃고;양", options: ["얻어;음", "잃고;양", "공유하고;중성", "얻어;양"], explanation: "금속 원소는 원자가전자를 잃고 양전하를 띠는 양이온이 되기 쉽습니다." },
+            { id: 63, type: 'fill-in', text: "63. 비금속 원소는 ( )를 ( ) ( )이온이 되기 쉽다.", answer: "전자;얻어;음", options: ["전자;잃고;양", "양성자;얻어;양", "전자;얻어;음", "중성자;잃고;음"], explanation: "비금속 원소는 다른 원자로부터 전자를 얻어 음전하를 띠는 음이온이 되기 쉽습니다." },
+            { id: 64, type: 'ox', text: "64. 금속 원소가 안정한 전자 배치를 이루면 원래 주기 그대로에 18족 원소와 같다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 가장 바깥 껍질의 전자를 잃어버리므로, 그 안쪽 껍질이 가장 바깥 껍질이 됩니다. 따라서 이전 주기의 18족 원소와 같은 전자 배치를 갖게 됩니다." },
+            { id: 65, type: 'ox', text: "65. 금속 원소가 안정한 전자 배치를 이루면 원래 주기 -1에 18족 원소와 같다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 예를 들어 3주기의 나트륨(Na)은 전자 1개를 잃고 2주기의 네온(Ne)과 같은 전자 배치를 이룹니다." },
+            { id: 66, type: 'fill-in', text: "66. 비금속 원소가 안정한 전자 배치를 이루면 원래 주기 ( )족 원소와 같아진다.", answer: "18", options: ["1", "2", "17", "18"], explanation: "비금속 원소는 전자를 얻어 가장 바깥 껍질을 채우므로, 자신이 속한 주기의 18족 원소와 같은 전자 배치를 이룹니다." },
+            { id: 67, type: 'fill-in', text: "67. 이온 결합이란 ( )과 ( )사이에 ( )에 의해 형성", answer: "양이온;음이온;정전기적 인력", options: ["양이온;음이온;정전기적 인력", "원자;원자;공유결합", "양이온;양이온;척력", "금속;비금속;반데르발스 힘"], explanation: "양이온의 (+)전하와 음이온의 (-)전하 사이에 작용하는 전기적인 끌어당기는 힘(정전기적 인력)으로 형성됩니다." },
+            { id: 68, type: 'fill-in', text: "68. 이온 결합 물질 자체는 전기적으로 ( )이며 규칙적인 ( )를 이룬다.", answer: "중성;입체 구조", options: ["양성;평면 구조", "중성;입체 구조", "음성;선형 구조", "중성;무작위 구조"], explanation: "양이온과 음이온이 결합하여 전체 전하량은 0(중성)이 되며, 이온들이 규칙적으로 배열된 결정 구조를 형성합니다." },
+            { id: 69, type: 'fill-in', text: "69. 우리 몸에 가장 많은 물질은 ( )결합 물질이다.", answer: "공유", options: ["이온", "금속", "수소", "공유"], explanation: "우리 몸의 대부분을 차지하는 물(H₂O)과 유기물(단백질, 탄수화물, 지방 등)은 모두 공유 결합으로 이루어져 있습니다." },
+            { id: 70, type: 'fill-in', text: "70. 물(H₂O)의 공유 전자쌍은 ( )쌍이고, 공유 전자수는 ( )개, ( )결합 2번", answer: "2;4;단일", options: ["1;2;이중", "2;4;단일", "2;2;단일", "1;2;단일"], explanation: "산소 원자가 두 개의 수소 원자와 각각 단일 결합을 하므로, 공유 전자쌍은 2쌍, 총 공유 전자는 4개입니다." },
+            { id: 71, type: 'fill-in', text: "71. 산소(O₂)의 공유 전자쌍은 ( )쌍이고, 공유 전자수는 ( )개, ( )결합 1번", answer: "2;4;이중", options: ["1;2;단일", "2;4;단일", "2;4;이중", "1;2;이중"], explanation: "두 개의 산소 원자가 전자쌍 2개를 공유하는 이중 결합을 형성합니다. 따라서 공유 전자쌍은 2쌍, 총 공유 전자는 4개입니다." },
+            { id: 72, type: 'fill-in', text: "72. 물(H₂O)의 수소 원자는 ( )과 같은 안정한 배치를, 산소 원자는 ( )과 같은 안정한 배치를 이룬다.", answer: "헬륨;네온", options: ["헬륨;아르곤", "리튬;네온", "헬륨;네온", "리튬;아르곤"], explanation: "수소는 전자 2개를 채워 헬륨처럼, 산소는 전자 8개를 채워 네온처럼 안정해집니다." },
+            { id: 73, type: 'fill-in', text: "73. 플루오린화 수소(HF)의 공유 전자쌍은 ( )쌍이고, 공유 전자수는 ( )개", answer: "1;2", options: ["1;1", "1;2", "2;2", "2;4"], explanation: "수소와 플루오린이 전자 1개씩을 내놓아 1개의 공유 전자쌍을 형성하므로, 공유 전자는 총 2개입니다." },
+            { id: 74, type: 'ox', text: "74. 플루오린화 수소(HF)의 수소 원자와 플루오린 원자의 안정한 배치는 같다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 수소는 헬륨(전자 2개)과 같은, 플루오린은 네온(전자 10개)과 같은 안정한 전자 배치를 이룹니다." },
+            { id: 75, type: 'fill-in', text: "75. 달걀 껍데기의 주성분인 ( )은 ( )결합 물질이다.", answer: "탄산칼슘;이온", options: ["탄산칼슘;이온", "규산마그네슘;공유", "인산칼슘;이온", "셀룰로스;공유"], explanation: "탄산칼슘(CaCO₃)은 칼슘 이온(Ca²⁺)과 탄산 이온(CO₃²⁻)이 결합한 이온 결합 물질입니다." },
+            { id: 76, type: 'fill-in', text: "76. 제산제의 주성분인 ( )은 ( )결합 물질이다.", answer: "수산화마그네슘;이온", options: ["수산화나트륨;공유", "수산화마그네슘;이온", "탄산수소나트륨;이온", "아세트산;공유"], explanation: "수산화마그네슘(Mg(OH)₂)은 마그네슘 이온(Mg²⁺)과 수산화 이온(OH⁻)이 결합한 이온 결합 물질입니다." },
+            { id: 77, type: 'fill-in', text: "77. 설탕은 ( )결합 물질이다.", answer: "공유", options: ["이온", "공유", "금속", "수소"], explanation: "설탕은 탄소, 수소, 산소 원자들이 전자를 공유하여 만들어진 분자이므로 공유 결합 물질입니다." },
+            { id: 78, type: 'fill-in', text: "78. 휴대용 가스 레인지의 연료인 ( )은 ( )결합 물질이다.", answer: "뷰테인;공유", options: ["메테인;이온", "프로페인;금속", "뷰테인;공유", "에탄올;이온"], explanation: "뷰테인(C₄H₁₀)은 탄소와 수소 원자로 이루어진 공유 결합 물질입니다." },
+            { id: 79, type: 'fill-in', text: "79. 탄산칼슘의 화학식은 ( )", answer: "CaCO₃", options: ["CaSO₄", "Ca(HCO₃)₂", "CaCO₃", "CaCl₂"], explanation: "칼슘 이온(Ca²⁺)과 탄산 이온(CO₃²⁻)이 1:1로 결합합니다." },
+            { id: 80, type: 'fill-in', text: "80. 뷰테인의 화학식은 ( )", answer: "C₄H₁₀", options: ["CH₄", "C₂H₆", "C₃H₈", "C₄H₁₀"], explanation: "뷰테인은 탄소(C)가 4개, 수소(H)가 10개인 탄화수소입니다." },
+            { id: 81, type: 'fill-in', text: "81. 수산화 마그네슘의 화학식은 ( )", answer: "Mg(OH)₂", options: ["MgOH", "Mg(OH)₂", "Mg₂OH", "MgO"], explanation: "마그네슘 이온(Mg²⁺)과 수산화 이온(OH⁻)이 1:2의 비율로 결합하여 전기적으로 중성을 이룹니다." },
+            { id: 82, type: 'ox', text: "82. 고체 상태의 이온 결합 물질은 전기전도성이 있다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 고체 상태에서는 이온들이 이동할 수 없어 전기가 통하지 않습니다." },
+            { id: 83, type: 'ox', text: "83. 증류수는 전기전도성이 있다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 이온이 거의 없는 순수한 물은 전기가 거의 통하지 않습니다." },
+            { id: 84, type: 'ox', text: "84. 순수한 물인 증류수에는 이온이 들어 있다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 증류수는 불순물과 이온을 대부분 제거한 순수한 물입니다." },
+            { id: 85, type: 'ox', text: "85. 모든 공유 결합 물질은 수용액 상태에서 전기전도성이 없다.", answer: "X", options: ["O", "X"], explanation: "아닙니다. 염화수소(HCl)나 아세트산(CH₃COOH)처럼 물에 녹아 이온을 만드는 공유 결합 물질은 전기 전도성이 있습니다." },
+            { id: 86, type: 'ox', text: "86. 이온 결합 물질은 수용액 상태에서 전기 전도성이 있다.", answer: "O", options: ["O", "X"], explanation: "맞습니다. 물에 녹아 양이온과 음이온으로 나뉘어져 자유롭게 이동할 수 있기 때문에 전기가 통합니다." }
         ];
 
         // 명언 목록
@@ -358,7 +250,7 @@
                     return '<span class="blank-emphasis">( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</span>';
                 });
 
-                questionText.innerHTML = processedText.replace(/\u00b3/g, '<sup>3</sup>');
+                questionText.innerHTML = processedText.replace(/(\d+)/g, '<sub>$1</sub>').replace(/<sub>(\d{2,})<\/sub>/g, '$1');
                 questionCard.appendChild(questionText);
 
                 const optionsContainer = document.createElement('div');
@@ -378,7 +270,7 @@
 
                     const optionLabel = document.createElement('label');
                     optionLabel.htmlFor = optionId;
-                    optionLabel.innerHTML = option.includes(';') ? option.split(';').join(', ') : option.replace(/\u00b3/g, '<sup>3</sup>');
+                    optionLabel.innerHTML = option.includes(';') ? option.split(';').join(', ') : option.replace(/(\d+)/g, '<sub>$1</sub>').replace(/<sub>(\d{2,})<\/sub>/g, '$1');
                     optionLabel.classList.add('option-label');
                     if (pageAttempted[currentPage]) optionLabel.classList.add('opacity-70', 'cursor-not-allowed');
 
@@ -436,7 +328,7 @@
                 feedbackElement.innerHTML = '<strong class="font-semibold">정답입니다!</strong> 🎉';
                 feedbackElement.className = 'feedback correct';
             } else {
-                feedbackElement.innerHTML = `<strong class="font-semibold">오답입니다.</strong> 정답은 "<span class="font-bold text-red-700">${correctAnswerText.replace(/\u00b3/g, '<sup>3</sup>')}</span>"입니다.`;
+                feedbackElement.innerHTML = `<strong class="font-semibold">오답입니다.</strong> 정답은 "<span class="font-bold text-red-700">${correctAnswerText.replace(/(\d+)/g, '<sub>$1</sub>').replace(/<sub>(\d{2,})<\/sub>/g, '$1')}</span>"입니다.`;
                 feedbackElement.className = 'feedback incorrect';
             }
 
@@ -574,7 +466,7 @@
         window.onload = () => {
             if (welcomePopup) {
                 // 각 퀴즈 페이지마다 고유한 sessionStorage 키 사용
-                const popupSessionKey = 'appiaQuizPasswordEntered_buldang_chemistry';
+                const popupSessionKey = 'appiaQuizPasswordEntered_buldang_chemistry_material';
                 const popupShownThisSession = sessionStorage.getItem(popupSessionKey);
                 if (!popupShownThisSession) {
                     welcomePopup.classList.add('show');
@@ -594,7 +486,7 @@
                     if (welcomePopup) {
                         welcomePopup.classList.remove('show');
                     }
-                    const popupSessionKey = 'appiaQuizPasswordEntered_buldang_chemistry';
+                    const popupSessionKey = 'appiaQuizPasswordEntered_buldang_chemistry_material';
                     sessionStorage.setItem(popupSessionKey, 'true');
                     initializeQuizData();
                     renderQuestionsForPage(0);
